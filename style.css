@@ -1,0 +1,20 @@
+.search-form{
+    min-width:100%;
+}
+.footer{
+    background-color:#eeeeee;
+    padding:10px;
+}
+.main{
+    min-height:450px;
+}
+.no-padding{
+    padding:0;
+}
+.cap{
+    text-transform:capitalize;
+}
+.no-show{
+    visibility:hidden;
+    display:none;
+}
