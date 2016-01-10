@@ -1,18 +1,16 @@
 <?php
+//get current page name
+$currentpage = basename($_SERVER['PHP_SELF']);
 //include the script for database connection
 include("db/dbconnection.php");
+// get pages from db to show in navigation
+$pagequery = "SELECT id,name,link,content,image FROM pages";
+$pages = $dbconnection->query($pagequery);
+
 //start session
 session_start();
 //if no token, generate one
-if(!isset($_SESSION["token"])){
-    $_SESSION["token"] = generateToken();
-}
-//function to generate token
-function generateToken(){
-    $binary = openssl_random_pseudo_bytes(16);
-    $token = bin2hex($binary);
-    return $token;
-}
+
 ?>
 <!doctype html>
 <html>
@@ -26,8 +24,19 @@ function generateToken(){
     
 <header class="header">
     <div class="navbar navbar-default">
-        <ul class="nav navbar-nav">
-           <!--add navigation here-->
-        </ul>
+        <div class="container">
+            <ul class="nav navbar-nav capitalize">
+               <?php 
+               if($pages->num_rows > 0){
+                   while($row = $pages->fetch_assoc()) {
+                        $id = $row["id"];
+                        $name = $row["name"];
+                        $link = $row["link"];
+                        echo "<li><a href=\"$link\">$name</a></li>";
+                    }
+               }
+               ?>
+            </ul>
+        </div>
     </div>
 </header>

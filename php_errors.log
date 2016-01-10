@@ -1,0 +1,6 @@
+[09-Jan-2016 23:02:02 UTC] PHP Warning:  include(header.php): failed to open stream: No such file or directory in /home/ubuntu/workspace/mail/mail.php on line 2
+[09-Jan-2016 23:02:02 UTC] PHP Stack trace:
+[09-Jan-2016 23:02:02 UTC] PHP   1. {main}() /home/ubuntu/workspace/mail/mail.php:0
+[09-Jan-2016 23:02:02 UTC] PHP Warning:  include(): Failed opening 'header.php' for inclusion (include_path='.:/usr/share/php:/usr/share/pear') in /home/ubuntu/workspace/mail/mail.php on line 2
+[09-Jan-2016 23:02:02 UTC] PHP Stack trace:
+[09-Jan-2016 23:02:02 UTC] PHP   1. {main}() /home/ubuntu/workspace/mail/mail.php:0

@@ -1,10 +1,10 @@
 <?php
-include("header.php");
+include("../header.php");
 if($_SESSION["token"]==$_POST["token"]){
     //check if the hidden form field is filled (spam)
     //if it is not filled, then get the rest of the form values
    if(!$_POST["number"]){
-       $to = "johannes.muljana@ait.nsw.edu.au";
+       $to = "youremail@domain.com";
        $name = $_POST["name"];
        $email = $_POST["email"];
        $subject = $_POST["subject"];
