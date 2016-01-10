@@ -32,7 +32,13 @@ session_start();
                         $id = $row["id"];
                         $name = $row["name"];
                         $link = $row["link"];
-                        echo "<li><a href=\"$link\">$name</a></li>";
+                        if($link == $currentpage){
+                            $class="active";
+                        }
+                        else{
+                            $class="";
+                        }
+                        echo "<li class=\"$class\"><a href=\"$link\">$name</a></li>";
                     }
                }
                ?>
