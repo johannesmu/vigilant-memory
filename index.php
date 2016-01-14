@@ -50,16 +50,21 @@ $products = $dbconnection->query($productsquery);
                     $price = $row["sellprice"];
                     $image = $row["image"];
                     echo 
-                    "<div class=\"col-xs-4 front-products\">".
+                    "<div class=\"col-sm-4 front-products\">".
                     "<h3>$name</h3>".
                     "<a href=\"productview.php?id=$id\"><img src=\"products/$image\"></a>".
-                    "<p class=\"price\">$price</p>".
-                    // buttons for buy and wish
-                    "<div class=\"btn-group\">".
-                        "<a href=\"productview.php?id=$id\" class=\"btn btn-default\">Detail</a>".
-                        "<a href=\"wishlist.php?id=$id\" class=\"btn btn-default\">Add to Wishlist</a>".
-                        "<a href=\"productview.php?id=$id\" class=\"btn btn-default\">Buy It</a>".
-                    "</div>".
+                        // buttons for detail, buy and wish
+                        "<div class=\"btn-group pull-right product-buttons\">".
+                            "<a href=\"productview.php?id=$id&page=$currentpage\" class=\"btn btn-default\">
+                             <i class=\"fa fa-ellipsis-h\"></i> Detail
+                            </a>".
+                            "<a href=\"wishlist.php?id=$id&page=$currentpage\" class=\"btn btn-default\">
+                            <i class=\"fa fa-star-o\"></i> Add to Wishlist
+                            </a>".
+                            "<a href=\"cart.php?id=$id&page=$currentpage\" class=\"btn btn-default\">
+                            <i class=\"fa fa-shopping-basket\"></i> Buy It For<span class=\"price\">$price</span>
+                            </a>".
+                        "</div>".
                     "</div>";
                 }
             }

@@ -18,7 +18,7 @@ session_start();
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Welcome</title>
     <link href="components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="components/font-awesome/css/font-awesome.css">
+    <link href="components/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
@@ -26,6 +26,7 @@ session_start();
 <header class="header">
     <div class="navbar navbar-default">
         <div class="container">
+                <a href=""></a>
             <ul class="nav navbar-nav capitalize">
                <?php 
                if($pages->num_rows > 0){
