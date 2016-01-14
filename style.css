@@ -19,7 +19,7 @@
     display:none;
 }
 
-.front-products img{
+.front-products img, .responsive-image{
     width:100%;
 }
 .front-products .price{
@@ -30,4 +30,13 @@
     content:"$";
     display:inline-block;
     margin-right:5px;
+}
+.flex-end{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    justify-content:flex-end;
+}
+.product-detail{
+    min-height:300px;
 }

@@ -18,6 +18,7 @@ session_start();
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Welcome</title>
     <link href="components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="components/font-awesome/css/font-awesome.css">
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
@@ -32,6 +33,7 @@ session_start();
                         $id = $row["id"];
                         $name = $row["name"];
                         $link = $row["link"];
+                        // if the link matches the current page, set the class to active
                         if($link == $currentpage){
                             $class="active";
                         }

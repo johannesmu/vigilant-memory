@@ -24,7 +24,7 @@ if($content->num_rows > 0){
 }
 
 //get products from database, limit to 3
-$productsquery = "SELECT id,stocklevel,category,name,sellprice,image FROM products ORDER BY sellprice DESC LIMIT 3";
+$productsquery = "SELECT id,stocklevel,category,name,sellprice,image FROM products ORDER BY sellprice DESC LIMIT 6";
 $products = $dbconnection->query($productsquery);
 ?>
 <main class="main">
@@ -49,10 +49,17 @@ $products = $dbconnection->query($productsquery);
                     $name = $row["name"];
                     $price = $row["sellprice"];
                     $image = $row["image"];
-                    echo "<div class=\"col-xs-4 front-products\">".
+                    echo 
+                    "<div class=\"col-xs-4 front-products\">".
                     "<h3>$name</h3>".
-                    "<img src=\"products/$image\">".
+                    "<a href=\"productview.php?id=$id\"><img src=\"products/$image\"></a>".
                     "<p class=\"price\">$price</p>".
+                    // buttons for buy and wish
+                    "<div class=\"btn-group\">".
+                        "<a href=\"productview.php?id=$id\" class=\"btn btn-default\">Detail</a>".
+                        "<a href=\"wishlist.php?id=$id\" class=\"btn btn-default\">Add to Wishlist</a>".
+                        "<a href=\"productview.php?id=$id\" class=\"btn btn-default\">Buy It</a>".
+                    "</div>".
                     "</div>";
                 }
             }
