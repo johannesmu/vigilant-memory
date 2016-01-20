@@ -1,6 +1,6 @@
 <?php 
 include("header.php");
-
+include("searchbar.php");
 //check if get variable is set so we can show 
 if(isset($_GET["category"])){
     $chosen = $_GET["category"];
@@ -15,11 +15,11 @@ $content = $dbconnection->query($contentquery);
 
 if($content->num_rows > 0){
    while($row = $content->fetch_assoc()) {
-        $id = $row["id"];
-        $name = $row["name"];
-        $title = $row["title"];
-        $link = $row["link"];
-        $text = $row["content"];
+        $contentid = $row["id"];
+        $contentname = $row["name"];
+        $contenttitle = $row["title"];
+        $contentlink = $row["link"];
+        $contenttext = $row["content"];
     }
 }
 
@@ -33,10 +33,10 @@ $products = $dbconnection->query($productsquery);
         <div class="row">
             <div class="col-xs-12">
                  <h1>
-                    <?php echo $title;?>
+                    <?php echo $contenttitle;?>
                 </h1>
                 <p>
-                    <?php echo $text;?>
+                    <?php echo $contenttext;?>
                 </p>
             </div>
         </div>
@@ -45,24 +45,24 @@ $products = $dbconnection->query($productsquery);
             <?php
             if($products->num_rows>0){
                 while($row = $products->fetch_assoc()){
-                    $id = $row["id"];
-                    $name = $row["name"];
-                    $price = $row["sellprice"];
-                    $image = $row["image"];
+                    $productid = $row["id"];
+                    $productname = $row["name"];
+                    $productprice = $row["sellprice"];
+                    $productimage = $row["image"];
                     echo 
                     "<div class=\"col-sm-4 front-products\">".
-                    "<h3>$name</h3>".
-                    "<a href=\"productview.php?id=$id\"><img src=\"products/$image\"></a>".
+                    "<h3>$productname</h3>".
+                    "<a href=\"productview.php?id=$productid\"><img src=\"products/$productimage\"></a>".
                         // buttons for detail, buy and wish
                         "<div class=\"btn-group pull-right product-buttons\">".
-                            "<a href=\"productview.php?id=$id&page=$currentpage\" class=\"btn btn-default\">
+                            "<a href=\"productview.php?id=$productid&page=$currentpage\" class=\"btn btn-default\">
                              <i class=\"fa fa-ellipsis-h\"></i> Detail
                             </a>".
-                            "<a href=\"wishlist.php?id=$id&page=$currentpage\" class=\"btn btn-default\">
+                            "<a href=\"wishlist.php?id=$productid&page=$currentpage\" class=\"btn btn-default\">
                             <i class=\"fa fa-star-o\"></i> Add to Wishlist
                             </a>".
-                            "<a href=\"cart.php?id=$id&page=$currentpage\" class=\"btn btn-default\">
-                            <i class=\"fa fa-shopping-basket\"></i> Buy It For<span class=\"price\">$price</span>
+                            "<a href=\"cart.php?id=$productid&page=$currentpage\" class=\"btn btn-default\">
+                            <i class=\"fa fa-shopping-basket\"></i> Buy It For<span class=\"price\">$productprice</span>
                             </a>".
                         "</div>".
                     "</div>";

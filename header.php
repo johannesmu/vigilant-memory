@@ -9,7 +9,7 @@ $pages = $dbconnection->query($pagequery);
 
 //start session
 session_start();
-//if no token, generate one
+
 
 ?>
 <!doctype html>
@@ -26,7 +26,11 @@ session_start();
 <header class="header">
     <div class="navbar navbar-default">
         <div class="container">
-                <a href=""></a>
+            <?php
+                echo "<a href=\"index.php\" class=\"navbar-brand\">
+                <img class=\"navbar-image\" src=\"images/ShopLogo.svg\">
+                </a>";
+            ?>
             <ul class="nav navbar-nav capitalize">
                <?php 
                if($pages->num_rows > 0){
@@ -46,6 +50,12 @@ session_start();
                }
                ?>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href=""><i class="fa fa-shopping-cart"></i> Cart</a></li>
+                <li><a href="login.php"><i class="fa fa-user"></i> Login</a></li>
+                <li><a href="login.php#register"><i class="fa fa-user-plus"></i> Register</a></li>
+            </ul>
         </div>
     </div>
+    
 </header>

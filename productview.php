@@ -8,7 +8,7 @@ if(isset($_GET["id"])){
 //if no product id is set, redirect to store page.
 else{
     $url = "http://$_SERVER[HTTP_HOST]/store.php";
-    header('Location: $url');
+    header("Location: ".$url);
 }
 
 //get products from database, limit to 3
