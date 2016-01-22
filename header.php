@@ -6,11 +6,6 @@ include("db/dbconnection.php");
 // get pages from db to show in navigation
 $pagequery = "SELECT id,name,link,content,image FROM pages";
 $pages = $dbconnection->query($pagequery);
-
-//start session
-session_start();
-
-
 ?>
 <!doctype html>
 <html>
@@ -31,10 +26,14 @@ session_start();
                 <img class=\"navbar-image\" src=\"images/ShopLogo.svg\">
                 </a>";
             ?>
-            <ul class="nav navbar-nav capitalize">
-               <?php 
+            
+               <?php
                if($pages->num_rows > 0){
+                   $count=0;
                    while($row = $pages->fetch_assoc()) {
+                       if($count==0){
+                           echo "<ul class=\"nav navbar-nav capitalize\">";
+                       }
                         $id = $row["id"];
                         $name = $row["name"];
                         $link = $row["link"];
@@ -45,16 +44,33 @@ session_start();
                         else{
                             $class="";
                         }
-                        echo "<li class=\"$class\"><a href=\"$link\">$name</a></li>";
+                        echo "<li class=\"$class\"><a href=\"$link\">$name $count</a></li>";
+                        $count++;
                     }
+                    //close the nav
+                    echo "</ul>";
                }
                ?>
-            </ul>
+           
             <ul class="nav navbar-nav navbar-right">
-                <li><a href=""><i class="fa fa-shopping-cart"></i> Cart</a></li>
-                <li><a href="login.php"><i class="fa fa-user"></i> Login</a></li>
-                <li><a href="login.php#register"><i class="fa fa-user-plus"></i> Register</a></li>
+                <?php
+                //since the navigation items are not in the database, we create them here
+                //as an associative array in the form of "name"=>"link" format
+                $items = ["cart"=>"shoppingcart.php","login or register"=>"login.php"];
+                //render the items here and add the active class if the link
+                //match the $currentpage variable defined on the top of this page
+                foreach($items as $name=>$link){
+                    if($link == $currentpage){
+                        $class="active";
+                    }
+                    else{
+                        $class="";
+                    }
+                    echo "<li class=\"$class\"><a href=\"$link\">$name</a></li>";
+                }
+                ?>
             </ul>
+            
         </div>
     </div>
     
