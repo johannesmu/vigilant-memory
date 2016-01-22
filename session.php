@@ -5,6 +5,10 @@ session_start();
 if(!isset($_SESSION["token"])){
     $_SESSION["token"] = generateToken();
 }
+if(!isset($_SESSION['timestamp'])){
+     $_SESSION["timestamp"]= generateTimeStamp();
+}
+
 //function to generate token
 function generateToken(){
     $binary = openssl_random_pseudo_bytes(16);
