@@ -44,7 +44,7 @@ $pages = $dbconnection->query($pagequery);
                         else{
                             $class="";
                         }
-                        echo "<li class=\"$class\"><a href=\"$link\">$name $count</a></li>";
+                        echo "<li class=\"$class\"><a href=\"$link\">$name</a></li>";
                         $count++;
                     }
                     //close the nav
