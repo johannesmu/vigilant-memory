@@ -65,7 +65,7 @@ $pages = $dbconnection->query($pagequery);
                 <?php
                 //since the navigation items are not in the database, we create them here
                 //as an associative array in the form of "name"=>"link" format
-                $items = ["cart"=>"shoppingcart.php","login/register"=>"login.php"];
+                $items = ["cart"=>"shoppingcart.php","login/register"=>"login.php","account"=>"user-dashboard.php"];
                 //render the items here and add the active class if the link
                 //match the $currentpage variable defined on the top of this page
                 foreach($items as $name=>$link){

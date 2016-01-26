@@ -1,8 +1,10 @@
 $(document).ready(function(){
+//registration form 
    $("#register-form").submit(function(event){
        //clear all error messages
        $(".error").removeClass("error");
        $(".alert").empty().removeClass("alert-danger");
+       $(".alert").empty().removeClass("alert-warning");
        //stop the page from loading another page
        event.preventDefault();
        //collect data from the form
@@ -52,7 +54,44 @@ $(document).ready(function(){
           }
        })
        .fail(function(data){
-           console.log(data);
+           //in case the request fails
+            console.log(data);
+            $(".success-message").addClass("alert-warning");
+            $(".success-message").html("there has been a network error, please try again");
        });
-   }); 
+   });
+   //javascipt to handle the login form
+   $("#login-form").submit(function(event){
+       event.preventDefault();
+      //colect data from the form
+      var logindata = {
+          "name" : $("#user-name").val(),
+          "password" : $("#user-password").val(),
+          "user-token" : token
+      }
+      console.log(logindata);
+      //send login data to server
+      //by calling user-login.php
+       $.ajax({
+           type: "POST",
+           url: "user-login.php",
+           data: logindata,
+           dataType: "json",
+           encode: true
+       })
+       .done(function(data){
+           if(!data.success){
+               console.log(data);
+           }
+           else{
+               //login is successful
+               $(".login-message").addClass("alert-success");
+               $(".login-message").html("Success, Yo!");
+               //redirect to user dashboard
+               setTimeout(function(){
+                   window.location.href = "user-dashboard.php";
+               },2000);
+           }
+       });
+   });
 });

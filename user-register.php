@@ -7,7 +7,7 @@ $errors = array();
 $data = array();
 //check submitted data
 if($_POST["user-token"]!=$_SESSION["token"]){
-    $data["error"] = "token not equal";
+    $errors["token"] = "token not equal";
 }
 else{
     //if tokens match
@@ -83,7 +83,5 @@ function checkUserTable($item,$fieldname,$connection){
     }
 }
 
-function insertUserData($user,$password,$connection){
-    
-}
+
 ?>

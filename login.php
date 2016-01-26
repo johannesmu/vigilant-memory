@@ -24,7 +24,7 @@ include("header.php");
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="login">
                         <h2>Login</h2>
-                        <form id="login-form" class="login-form" action="userlogin.php">
+                        <form id="login-form" class="login-form">
                             <label for="user-name">User Name</label>
                             <input name="user-name" 
                                 id="user-name" 
@@ -37,7 +37,6 @@ include("header.php");
                                 type="password" 
                                 class="form-control" 
                                 placeholder="Password">
-                            <input type="hidden" value="login">
                             <br>
                             <button class="btn btn-default" role="submit">Sign In</button>
                             <p>
@@ -49,13 +48,13 @@ include("header.php");
                         </form>
                         <div class="row">
                             <div class="col-xs-12">
-                                <p class="login-msg msg"></p>
+                                <div class="alert login-message"></div>
                             </div>
                         </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="register">
                         <h2>Join Bag Love</h2>
-                        <form id="register-form" class="register-form" action="user-register.php">
+                        <form id="register-form" class="register-form">
                             <label for="reg-user-name">User Name</label>
                             <input name="reg-user-name" 
                                 id="reg-user-name" 
