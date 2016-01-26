@@ -6,6 +6,7 @@ include("db/dbconnection.php");
 // get pages from db to show in navigation
 $pagequery = "SELECT id,name,link,content,image FROM pages";
 $pages = $dbconnection->query($pagequery);
+
 ?>
 <!doctype html>
 <html>
@@ -15,6 +16,14 @@ $pages = $dbconnection->query($pagequery);
     <link href="components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="components/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
+    <?php
+        $currenttimestamp = $_SESSION["timestamp"];
+        $currenttoken = $_SESSION["token"];
+        echo "<script>\n";
+        echo "var timestamp = \"$currenttimestamp\";\n";
+        echo "var token=\"$currenttoken\";\n";
+        echo "</script>\n";
+    ?>
 </head>
 <body>
     
@@ -52,11 +61,11 @@ $pages = $dbconnection->query($pagequery);
                }
                ?>
            
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right capitalize">
                 <?php
                 //since the navigation items are not in the database, we create them here
                 //as an associative array in the form of "name"=>"link" format
-                $items = ["cart"=>"shoppingcart.php","login or register"=>"login.php"];
+                $items = ["cart"=>"shoppingcart.php","login/register"=>"login.php"];
                 //render the items here and add the active class if the link
                 //match the $currentpage variable defined on the top of this page
                 foreach($items as $name=>$link){

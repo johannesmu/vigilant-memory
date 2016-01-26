@@ -68,3 +68,11 @@
 .panel{
     min-height:500px;
 }
+.form-control.error{
+    border:1px dotted red;
+}
+.alert:empty{
+    height:0px;
+    margin:0;
+    padding:0;
+}
