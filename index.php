@@ -1,4 +1,5 @@
 <?php 
+include("session.php");
 include("header.php");
 include("searchbar.php");
 //check if get variable is set so we can show 

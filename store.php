@@ -1,5 +1,9 @@
-<?php 
+<?php
+//include session for login and account
+include("session.php");
+//include hearder for navigation
 include("header.php");
+//include search bar to show search bar on this page
 include("searchbar.php");
 //get pages from db to show content
 $contentquery = "SELECT id,name,title,link,content FROM pages WHERE link='$currentpage'";
@@ -38,7 +42,7 @@ $productsquery ="SELECT * FROM products WHERE category='$currentcategoryid'";
 if($currentcategoryname == "all" || $currentcategoryname == ""){
     $productsquery = "SELECT * FROM products";
 }
-$products = $dbconnection->query($productsquery);
+$products = $dbconnection->query($productsquery)
 ?>
 <main class="main">
     <div class="container">
@@ -88,24 +92,25 @@ $products = $dbconnection->query($productsquery);
                         $productspecialprice = $row["specialprice"];
                         //we want to create a row for every three products so we set a counter $i
                         //so that every three products generate a new row
-                        if($i==0){
-                            echo "<div class=\"row\">";
-                        }
-                        if($i<4){
-                            echo "<div class=\"col-xs-6 col-sm-3\">";
-                            //output the product here
-                            echo
-                            "<a class=\"store-product\" href=\"productview.php?id=$productid\">".
-                            "<h4>$productname</h4>".
-                            "<img class=\"store-product-image responsive-image\" src=\"products/$productimage\">".
-                            "</a>";
-                            echo "</div>";
-                            $i++;
-                        }
-                        else{
-                            $i=0;
-                            echo "</div>";
-                        }
+                            if($i==0){
+                                echo "<div class=\"row\">";
+                            }
+                            elseif($i<4){
+                                echo "<div class=\"col-xs-6 col-sm-3\">";
+                                //output the product here
+                                echo "<p>$i</p>";
+                                echo
+                                "<a class=\"store-product\" href=\"productview.php?id=$productid\">".
+                                "<h4>$productname</h4>".
+                                "<img class=\"store-product-image responsive-image\" src=\"products/$productimage\">".
+                                "</a>";
+                                echo "</div>";
+                                $i++;
+                            }
+                            else{
+                                $i=0;
+                                echo "</div>";
+                            }
                     }
                 }
                 ?>

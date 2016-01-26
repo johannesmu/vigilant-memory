@@ -1,6 +1,8 @@
 <?php
+include("session.php");
 include("header.php");
 include("searchbar.php");
+
 //get pages from db to show content
 $contentquery = "SELECT id,name,title,link,content FROM pages WHERE link='$currentpage'";
 $content = $dbconnection->query($contentquery);

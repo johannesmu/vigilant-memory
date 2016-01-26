@@ -1,5 +1,6 @@
 <?php
 include("header.php");
+include("session.php");
 ?>
 <main class="main">
     <div class="container">

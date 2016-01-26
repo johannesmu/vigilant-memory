@@ -1,5 +1,6 @@
 <?php 
 include("header.php");
+include("session.php");
 
 //check if there is a variable for product id set or sent from another page, via productview.php?id=2
 if(isset($_GET["id"])){
