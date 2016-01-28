@@ -69,10 +69,17 @@ $products = $dbconnection->query($productsquery)
                                 if($currentcategoryid==$categoryid){
                                     $class="active";
                                 }
+                                elseif($categoryname == "all" && !$currentcategoryid){
+                                    $class="active";
+                                }
                                 else{
                                     $class="";
                                 }
-                                echo "<li class=\"$class caps\"><a href=\"$currentpage?category=$categoryid\">$categoryname</a></li>";
+                                echo "<li class=\"$class caps\">
+                                    <a href=\"$currentpage?category=$categoryid\">
+                                        $categoryname
+                                    </a>
+                                    </li>";
                             }
                         }
                         ?>
@@ -82,7 +89,6 @@ $products = $dbconnection->query($productsquery)
             <div class="col-md-10 store-front">
                 <?php
                 if($products->num_rows > 0){
-                    $i=0;
                     while($row = $products->fetch_assoc()){
                         $productid = $row["id"];
                         $productname = $row["name"];
@@ -90,27 +96,16 @@ $products = $dbconnection->query($productsquery)
                         $productimage = $row["image"];
                         $productprice = $row["sellprice"];
                         $productspecialprice = $row["specialprice"];
-                        //we want to create a row for every three products so we set a counter $i
-                        //so that every three products generate a new row
-                            if($i==0){
-                                echo "<div class=\"row\">";
-                            }
-                            elseif($i<4){
-                                echo "<div class=\"col-xs-6 col-sm-3\">";
-                                //output the product here
-                                echo "<p>$i</p>";
-                                echo
-                                "<a class=\"store-product\" href=\"productview.php?id=$productid\">".
-                                "<h4>$productname</h4>".
-                                "<img class=\"store-product-image responsive-image\" src=\"products/$productimage\">".
-                                "</a>";
-                                echo "</div>";
-                                $i++;
-                            }
-                            else{
-                                $i=0;
-                                echo "</div>";
-                            }
+                        
+                        echo "<div class=\"col-xs-6 col-sm-3\">";
+                        //output the product here
+                        echo
+                        "<a class=\"store-product\" href=\"productview.php?id=$productid\">".
+                        "<h4>$productname</h4>".
+                        "<img class=\"store-product-image responsive-image\" src=\"products/$productimage\">".
+                        "</a>";
+                        echo "</div>";
+
                     }
                 }
                 ?>

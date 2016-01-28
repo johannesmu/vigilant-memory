@@ -18,7 +18,8 @@ else{
         //the name of the form element becomes the key in the post data
         //eg <input name="reg-user-name"> becomes $_POST["reg-user-name"];
         //we store it in $username for easy reference
-        $username = $_POST["user-name"];
+        //we also need to sanitize it to prevent hacks
+        $username = filter_var($_POST["user-name"], FILTER_SANITIZE_STRING);
         //check if username exists in the database already as there cannot be two users
         //with the same name, if it exists add an error with a message to $errors
         if(checkUserTable($username,"username",$dbconnection)){
@@ -26,7 +27,8 @@ else{
         }
         //check if email is already used eg if checkUserTable returns true
         //email will also be used to recover forgotten password, so must be unique
-        $email = $_POST["user-email"];
+        //sanitize email to prevent hacks
+        $email = filter_var($_POST["user-email"], FILTER_SANITIZE_EMAIL);
         if(checkUserTable($email,"email",$dbconnection)){
             $errors["email"] = "that email address has already been used";
         }
@@ -50,8 +52,8 @@ else{
             $datemodified = $datecreated;
             //create the query to insert
             $createuserquery = 
-            "INSERT INTO users (username,password,email) 
-            VALUES ('$username','$hashed_password','$email')";
+            "INSERT INTO users (username,password,email,datecreated,datemodified) 
+            VALUES ('$username','$hashed_password','$email','$datecreated','$datemodified')";
             //run query against database
             //if query is successful
             if (!$dbconnection->query($createuserquery) === TRUE) {

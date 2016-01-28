@@ -3,8 +3,8 @@
 $currentpage = basename($_SERVER['PHP_SELF']);
 //include the script for database connection
 include("db/dbconnection.php");
-// get pages from db to show in navigation
-$pagequery = "SELECT id,name,link,content,image FROM pages";
+// get pages from db to show in left side navigation
+$pagequery = "SELECT id,name,link,content,image,side,loginrequired FROM pages";
 $pages = $dbconnection->query($pagequery);
 
 ?>
@@ -36,51 +36,88 @@ $pages = $dbconnection->query($pagequery);
                 </a>";
             ?>
             
-               <?php
-               if($pages->num_rows > 0){
-                   $count=0;
-                   while($row = $pages->fetch_assoc()) {
-                       if($count==0){
-                           echo "<ul class=\"nav navbar-nav capitalize\">";
-                       }
-                        $id = $row["id"];
-                        $name = $row["name"];
-                        $link = $row["link"];
-                        // if the link matches the current page, set the class to active
-                        if($link == $currentpage){
-                            $class="active";
-                        }
-                        else{
-                            $class="";
-                        }
-                        echo "<li class=\"$class\"><a href=\"$link\">$name</a></li>";
-                        $count++;
-                    }
-                    //close the nav
-                    echo "</ul>";
+           <?php
+           //you will need a "side" column in your "pages" table in the db
+           //to determine which link will be on left or right hand side of nav
+            //we create an array to store the items from "pages" table
+           $navitems = array();
+           if($pages->num_rows > 0){
+               while($row = $pages->fetch_assoc()) {
+                    array_push($navitems,$row);
                }
-               ?>
-           
-            <ul class="nav navbar-nav navbar-right capitalize">
-                <?php
-                //since the navigation items are not in the database, we create them here
-                //as an associative array in the form of "name"=>"link" format
-                $items = ["cart"=>"shoppingcart.php","login/register"=>"login.php","account"=>"user-dashboard.php"];
-                //render the items here and add the active class if the link
-                //match the $currentpage variable defined on the top of this page
-                foreach($items as $name=>$link){
-                    if($link == $currentpage){
-                        $class="active";
-                    }
-                    else{
-                        $class="";
-                    }
-                    echo "<li class=\"$class\"><a href=\"$link\">$name</a></li>";
-                }
-                ?>
-            </ul>
-            
+           }
+           echo "<ul class=\"nav navbar-nav navbar-left capitalize\">";
+           foreach($navitems as $row){
+               $name = $row["name"];
+               $link = $row["link"];
+               $side = $row["side"];
+               //render the left side of navigation
+               if($side=="left"){
+                   if($link == $currentpage){
+                       $class="active";
+                   }
+                   else{
+                       $class="";
+                   }
+                   echo "<li class=\"$class\"><a href=\"$link\">$name</a></li>";
+               }
+           }
+           echo "</ul>";
+           echo "<ul class=\"nav navbar-nav navbar-right capitalize\">";
+           foreach($navitems as $row){
+               $name = $row["name"];
+               $link = $row["link"];
+               $side = $row["side"];
+               $needlogin = $row["loginrequired"];
+               //render the right side of navigation
+               if($side=="right"){
+                   if($link == $currentpage){
+                       $class="active";
+                   }
+                   else{
+                       $class="";
+                   }
+                   //if page does not need login
+                   if($needlogin==0){
+                       if($name == "login.php" && $_SESSION["user"]==true){
+                           //don't render the login link if user is logged in
+                           //this section is unfinished
+                       }
+                       else{
+                           echo "<li class=\"$class\"><a href=\"$link\">$name</a></li>";
+                       }
+                   }
+                   //if page needs login
+                   elseif($needlogin==1 && $_SESSION["user"]){
+                       echo "<li class=\"$class\"><a href=\"$link\">$name</a></li>";
+                   }
+                   elseif($needlogin==2 && $_SESSION["user"]["isadmin"]=='1'){
+                       echo "<li class=\"$class\"><a href=\"$link\">$name</a></li>";
+                   }
+               }
+           }
+           ?>
         </div>
     </div>
-    
+    <!--we use this to show greeting for the user when logged in-->
+    <div class="container user-bar">
+        <div class="row">
+            <div class="col-xs-12">
+        <?php
+        
+        //display user's name if logged in
+        if($_SESSION["user"]){
+            if($_SESSION["user"]["firstname"]){
+                //if we know firstname display it
+                echo "Hello <span class=\"capitalize\">".$_SESSION["user"]["firstname"]."<span>";
+            }
+            else{
+                //if we don't just display username
+                echo "Hello <span class=\"capitalize\">".$_SESSION["user"]["name"]."<span>";
+            }
+        }
+        ?>
+            </div>
+        </div>
+    </div>
 </header>

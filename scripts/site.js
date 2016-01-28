@@ -2,7 +2,6 @@ $(document).ready(function(){
 //registration form 
    $("#register-form").submit(function(event){
        //clear all error messages
-       $(".error").removeClass("error");
        $(".alert").empty().removeClass("alert-danger");
        $(".alert").empty().removeClass("alert-warning");
        //stop the page from loading another page
@@ -26,7 +25,6 @@ $(document).ready(function(){
        })
        .done(function(data){
            console.log(data);
-           //$(".register-msg").html("tested");
            //if the submit was not successfull, eg data.success is not equal true
           if(!data.success){
               //if there is an error with user name
@@ -60,7 +58,7 @@ $(document).ready(function(){
             $(".success-message").html("there has been a network error, please try again");
        });
    });
-   //javascipt to handle the login form
+//javascipt to handle the login form
    $("#login-form").submit(function(event){
        event.preventDefault();
       //colect data from the form
@@ -69,7 +67,6 @@ $(document).ready(function(){
           "password" : $("#user-password").val(),
           "user-token" : token
       }
-      console.log(logindata);
       //send login data to server
       //by calling user-login.php
        $.ajax({
@@ -83,14 +80,21 @@ $(document).ready(function(){
            if(!data.success){
                console.log(data);
            }
-           else{
+           //check if there is no error
+           if(!data.errors){
                //login is successful
+               console.log(data);
                $(".login-message").addClass("alert-success");
                $(".login-message").html("Success, Yo!");
-               //redirect to user dashboard
+               //wait 2 seconds then redirect to user dashboard
                setTimeout(function(){
                    window.location.href = "user-dashboard.php";
                },2000);
+           }
+           //if there are errors
+           else if(data.errors){
+             $(".login-message").addClass("alert-warning");
+             $(".login-message").html(data.errors.message);
            }
        });
    });
