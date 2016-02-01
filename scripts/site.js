@@ -55,7 +55,8 @@ $(document).ready(function(){
            //in case the request fails
             console.log(data);
             $(".success-message").addClass("alert-warning");
-            $(".success-message").html("there has been a network error, please try again");
+            $(".success-message").html("there has been an error, please try again");
+            
        });
    });
 //javascipt to handle the login form
@@ -86,7 +87,8 @@ $(document).ready(function(){
                console.log(data);
                $(".login-message").addClass("alert-success");
                $(".login-message").html("Success, Yo!");
-               //wait 2 seconds then redirect to user dashboard
+               //wait 2 seconds then redirect to user specified URL
+               var url = 
                setTimeout(function(){
                    window.location.href = "user-dashboard.php";
                },2000);

@@ -1,6 +1,7 @@
 <?php 
-include("header.php");
 include("session.php");
+include("header.php");
+
 
 //check if there is a variable for product id set or sent from another page, via productview.php?id=2
 if(isset($_GET["id"])){
@@ -12,15 +13,17 @@ else{
     header("Location: ".$url);
 }
 
-//get products from database, limit to 3
+//get product from database using the id
 $productsquery = "SELECT * FROM products WHERE id='$producttoshow'";
+//we only have one product here
 $product = $dbconnection->query($productsquery);
 
 if($product->num_rows>0){
   while($row = $product->fetch_assoc()){  
         $id = $row["id"];
         $name = $row["name"];
-        $price = $row["sellprice"];
+        $productprice = $row["sellprice"];
+        $productspecialprice = $row["specialprice"];
         $image = $row["image"];
         $desc = $row["description"];
   }
@@ -36,18 +39,31 @@ if($product->num_rows>0){
             </div>
         </div>
         
-        <div class="row flex">
+        <div class="row">
         <?php 
         echo 
         "<div class=\"col-md-4 col-md-offset-2\">".
         "<img class=\"product-detail-image responsive-image\" src=\"products/$image\">".
         "</div>".
-         "<div class=\"col-md-4 product-detail flex-end\">".
-         "<p>$desc</p>".
-         "<h4 class=\"price\">$price</h4>";
-         if($specialprice){
-             "<h4 class=\"special price\">$specialprice</h4>";
+         "<div class=\"col-md-4 product-detail\">".
+         "<p>$desc</p>";
+         echo "<div class=\"row\">";
+         if($productspecialprice){
+             echo "<div class=\"col-sm-6\">
+                    <div class=\"price strike\">
+                        $productprice
+                    </div>
+                </div>";
+             echo "<div class=\"col-sm-6\">
+             <div class=\"special price\">
+             $productspecialprice
+             </div>
+             </div>";
          }
+         else{
+             echo "<h4 class=\"price\">$productprice</h4>";
+         }
+         echo "</div>";
         echo
         "<div class=\"btn-group\">".
             "<a href=\"wishlist.php?id=$id&page=$currentpage\" class=\"btn btn-default\">Add to Wishlist</a>".

@@ -27,7 +27,11 @@
 .front-products img, .responsive-image{
     width:100%;
 }
-
+.front-products .price{
+    height:initial;
+    width:auto;
+    display:block;
+}
 .price{
       font-weight:bold;
 }
@@ -36,6 +40,15 @@
     display:inline-block;
     margin-right:3px;
     margin-left:3px;
+}
+.price{
+    font-size:16px;
+    height:40px;
+    width:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:5px;
 }
 .store-product{
     text-decoration:none;
@@ -75,4 +88,49 @@
     height:0px;
     margin:0;
     padding:0;
+}
+.spinner{
+    max-width:24px;
+    animation-name:spinner;
+    animation-duration:2s;
+    animation-iteration-count:infinite;
+    animation-timing-function:linear;
+    animation-play-state:paused;
+    display:none;
+}
+@keyframes spinner{
+    0%{
+        transform:rotate(0deg);
+    }
+    100%{
+        transform:rotate(360deg);
+    }
+}
+.form-meta{
+    padding:10px 0;
+}
+
+.strike{
+    color:#666666;
+    text-decoration:line-through;
+}
+.special{
+    position:absolute;
+    bottom:10px;
+    right:20px;
+    color:white;
+    background-image:url("images/special.png");
+    background-size:cover;
+    padding:20px;
+    box-sizing:border-box;
+    width:60px;
+    height:60px;
+}
+/*change position of the 
+special price in single product view*/
+.product-detail .special{
+    position:static;
+}
+.product{
+    position:relative;
 }

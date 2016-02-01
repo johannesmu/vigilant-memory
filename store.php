@@ -92,18 +92,41 @@ $products = $dbconnection->query($productsquery)
                     while($row = $products->fetch_assoc()){
                         $productid = $row["id"];
                         $productname = $row["name"];
-                        $productdesc = $row["description"];
                         $productimage = $row["image"];
                         $productprice = $row["sellprice"];
                         $productspecialprice = $row["specialprice"];
                         
-                        echo "<div class=\"col-xs-6 col-sm-3\">";
+                        echo "<div class=\"col-xs-6 col-sm-3 product\">";
                         //output the product here
                         echo
                         "<a class=\"store-product\" href=\"productview.php?id=$productid\">".
                         "<h4>$productname</h4>".
                         "<img class=\"store-product-image responsive-image\" src=\"products/$productimage\">".
                         "</a>";
+                        echo "<div class=\"row\">";
+                        if($productspecialprice){
+                            echo "<div class=\"col-sm-6\">
+                                    <div class=\"price strike\">$productprice</div>
+                                </div>";
+                            echo "<div class=\"col-sm-6\">
+                                    <div class=\"price special\">$productspecialprice</div>
+                                </div>";
+                        }
+                        else{
+                            echo "<div class=\"col-sm-12\">
+                                <div class=\"price\">
+                                    $productprice
+                                </div>
+                            </div>";
+                        }
+                        echo "</div>";
+                        echo "<div class=\"btn-group\">
+                            <button class=\"btn btn-xs btn-default\">
+                            <i class=\"fa fa-heart\"></i> Wish It</button>
+                            <button
+                            class=\"btn btn-xs btn-default\">
+                            <i class=\"fa fa-shopping-bag\"></i> Buy It</button>
+                        </div>";
                         echo "</div>";
 
                     }

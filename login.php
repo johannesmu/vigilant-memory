@@ -39,17 +39,13 @@ include("header.php");
                                 placeholder="Password">
                             <br>
                             <button class="btn btn-default" role="submit">Sign In</button>
-                            <p>
-                                <br>
-                                Don't have an account? You can <a  data-toggle="tab" href="#register">register</a>
-                                <br>
-                                
-                            </p>
                         </form>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="alert login-message"></div>
-                            </div>
+                        <div class="alert login-message"></div>
+                        <div class="form-meta">
+                            Don't have an account? You can <a  data-toggle="tab" href="#register">register</a>
+                        </div>
+                        <div class="form-meta">
+                            <a href="user-forgot-password.php">I forgot my password, cuz</a>
                         </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="register">
@@ -84,10 +80,7 @@ include("header.php");
                             <br><br>
                             <p>Already have an account? <a  data-toggle="tab" href="#login">Sign in here</a></p>
                         </form>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="alert success-message"></div>
-                            </div>
+                        <div class="alert success-message"></div>
                         </div>
                     </div>
                 </div>
@@ -95,7 +88,7 @@ include("header.php");
                 
             </div>
         </div>
-    </div>
+   
 </main>
 <?php
 include("footer.php");

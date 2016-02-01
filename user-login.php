@@ -20,11 +20,11 @@ else{
        //store user name in $user
        //clean input of any code to prevent hacks
        $user = filter_var($_POST["name"], FILTER_SANITIZE_STRING);
-       $data["suser"] = $user;
+       //$data["suser"] = $user;
        //store password in $password
         //clean input of any code to prevent hacks
        $password = filter_var($_POST["password"], FILTER_SANITIZE_STRING);
-       $data["spass"] = $password;
+       //$data["spass"] = $password;
        //create a query to check with database 
        //if user exists and if so, retrive id,username,passwd and email
        $loginquery = "SELECT * FROM users WHERE username='$user'";

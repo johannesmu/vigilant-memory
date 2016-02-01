@@ -23,6 +23,9 @@ $pages = $dbconnection->query($pagequery);
         echo "var timestamp = \"$currenttimestamp\";\n";
         echo "var token=\"$currenttoken\";\n";
         echo "</script>\n";
+        if($_SESSION["user"]){
+            echo "<script>var userid=".$_SESSION["user"]["id"].";</script>";
+        }
     ?>
 </head>
 <body>
@@ -79,7 +82,7 @@ $pages = $dbconnection->query($pagequery);
                    }
                    //if page does not need login
                    if($needlogin==0){
-                       if($name == "login.php" && $_SESSION["user"]==true){
+                       if($link == "login.php" && $_SESSION["user"]==true){
                            //don't render the login link if user is logged in
                            //this section is unfinished
                        }
@@ -102,7 +105,7 @@ $pages = $dbconnection->query($pagequery);
     <!--we use this to show greeting for the user when logged in-->
     <div class="container user-bar">
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-12 col-md-4">
         <?php
         
         //display user's name if logged in

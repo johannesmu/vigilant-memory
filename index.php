@@ -53,17 +53,21 @@ $products = $dbconnection->query($productsquery);
                     echo 
                     "<div class=\"col-sm-4 front-products\">".
                     "<h3>$productname</h3>".
-                    "<a href=\"productview.php?id=$productid\"><img src=\"products/$productimage\"></a>".
+                    "<a href=\"productview.php?id=$productid\">
+                    <img src=\"products/$productimage\">
+                    </a>".
+                    "<p class=\"price text-right\">$productprice</p>".
                         // buttons for detail, buy and wish
                         "<div class=\"btn-group pull-right product-buttons\">".
                             "<a href=\"productview.php?id=$productid&page=$currentpage\" class=\"btn btn-default\">
                              <i class=\"fa fa-ellipsis-h\"></i> Detail
                             </a>".
                             "<a href=\"wishlist.php?id=$productid&page=$currentpage\" class=\"btn btn-default\">
-                            <i class=\"fa fa-star-o\"></i> Add to Wishlist
+                            <i class=\"fa fa-heart-o\"></i> Add to Wishlist
                             </a>".
                             "<a href=\"cart.php?id=$productid&page=$currentpage\" class=\"btn btn-default\">
-                            <i class=\"fa fa-shopping-basket\"></i> Buy It For<span class=\"price\">$productprice</span>
+                            <i class=\"fa fa-shopping-basket\"></i> 
+                            Buy It 
                             </a>".
                         "</div>".
                     "</div>";
