@@ -67,9 +67,9 @@ if($product->num_rows>0){
         echo
         "<div class=\"product-buttons\">".
             "<button  
-            class=\"btn btn-default wish-button\">Add to Wishlist</button>".
+            class=\"btn btn-default wish-button\" data-id=\"$productid\">Add to Wishlist</button>".
             "<button  
-            class=\"btn btn-default buy-button\">Buy It</button>".
+            class=\"btn btn-default buy-button\" data-id=\"$productid\">Buy It</button>".
             "<select class=\" quantity\" data-id=\"$productid\">
                 <option>1</option>
                 <option>2</option>
