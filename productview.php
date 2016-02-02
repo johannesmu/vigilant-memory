@@ -20,8 +20,8 @@ $product = $dbconnection->query($productsquery);
 
 if($product->num_rows>0){
   while($row = $product->fetch_assoc()){  
-        $id = $row["id"];
-        $name = $row["name"];
+        $productid = $row["id"];
+        $productname = $row["name"];
         $productprice = $row["sellprice"];
         $productspecialprice = $row["specialprice"];
         $image = $row["image"];
@@ -34,7 +34,7 @@ if($product->num_rows>0){
         <div class="row">
             <div class="col-md-10 col-md-offset-2">
         <?php
-        echo "<h2>$name</h2>";
+        echo "<h2>$productname</h2>";
         ?>
             </div>
         </div>
@@ -65,9 +65,18 @@ if($product->num_rows>0){
          }
          echo "</div>";
         echo
-        "<div class=\"btn-group\">".
-            "<a href=\"wishlist.php?id=$id&page=$currentpage\" class=\"btn btn-default\">Add to Wishlist</a>".
-            "<a href=\"shoppingcart.php?id=$id&page=$currentpage\" class=\"btn btn-default\">Buy It</a>".
+        "<div class=\"product-buttons\">".
+            "<button  
+            class=\"btn btn-default wish-button\">Add to Wishlist</button>".
+            "<button  
+            class=\"btn btn-default buy-button\">Buy It</button>".
+            "<select class=\" quantity\" data-id=\"$productid\">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>".
         "</div>";
         echo "</div>";
         ?>   
@@ -75,5 +84,6 @@ if($product->num_rows>0){
     </div>
 </main>
 <?php include("footer.php"); ?>
+<script src="scripts/shopping-cart.js"></script>
 </body>
 </html>

@@ -87,6 +87,10 @@ $pages = $dbconnection->query($pagequery);
                            //this section is unfinished
                        }
                        else{
+                           //if item is cart, add an id of "shopping cart"
+                           if($link == "shoppingcart.php"){
+                               $class = $class." shopping-cart";
+                           }
                            echo "<li class=\"$class\"><a href=\"$link\">$name</a></li>";
                        }
                    }

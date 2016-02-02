@@ -50,25 +50,33 @@ $products = $dbconnection->query($productsquery);
                     $productname = $row["name"];
                     $productprice = $row["sellprice"];
                     $productimage = $row["image"];
+                    //render product data 
                     echo 
-                    "<div class=\"col-sm-4 front-products\">".
-                    "<h3>$productname</h3>".
-                    "<a href=\"productview.php?id=$productid\">
-                    <img src=\"products/$productimage\">
-                    </a>".
-                    "<p class=\"price text-right\">$productprice</p>".
+                    "<div class=\"col-sm-4 front-products\" data-id=\"$productid\">".
+                        "<h3>$productname</h3>".
+                        "<a href=\"productview.php?id=$productid\">
+                        <img src=\"products/$productimage\">
+                        </a>";
+                    echo "<p class=\"price text-right\">$productprice</p>";
                         // buttons for detail, buy and wish
-                        "<div class=\"btn-group pull-right product-buttons\">".
-                            "<a href=\"productview.php?id=$productid&page=$currentpage\" class=\"btn btn-default\">
-                             <i class=\"fa fa-ellipsis-h\"></i> Detail
-                            </a>".
-                            "<a href=\"wishlist.php?id=$productid&page=$currentpage\" class=\"btn btn-default\">
+                    echo "<div class=\"product-buttons\">".
+                            
+                            "<button class=\"btn btn-default wish-button\" data-id=\"$productid\">
                             <i class=\"fa fa-heart-o\"></i> Add to Wishlist
-                            </a>".
-                            "<a href=\"cart.php?id=$productid&page=$currentpage\" class=\"btn btn-default\">
+                            </button>".
+
+                            "<button class=\"btn btn-default buy-button\" data-id=\"$productid\">
                             <i class=\"fa fa-shopping-basket\"></i> 
                             Buy It 
-                            </a>".
+                            </button>".
+                            "<select class=\"form-control quantity\" data-id=\"$productid\">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>".
+
                         "</div>".
                     "</div>";
                 }
@@ -78,5 +86,6 @@ $products = $dbconnection->query($productsquery);
     </div>
 </main>
 <?php include("footer.php"); ?>
+<script src="scripts/shopping-cart.js"></script>
 </body>
 </html>

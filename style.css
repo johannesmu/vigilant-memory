@@ -89,6 +89,7 @@
     margin:0;
     padding:0;
 }
+/*animation for spinner image*/
 .spinner{
     max-width:24px;
     animation-name:spinner;
@@ -133,4 +134,8 @@ special price in single product view*/
 }
 .product{
     position:relative;
+}
+.quantity{
+    display:inline-block;
+    max-width:60px;
 }

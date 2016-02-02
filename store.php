@@ -58,6 +58,7 @@ $products = $dbconnection->query($productsquery)
         </div>
         <div class="row">
             <div class="col-md-2">
+                <!--categories sidebar menu-->
                 <nav>
                     <ul class="nav nav-pills nav-stacked">
                         <?php
@@ -89,46 +90,54 @@ $products = $dbconnection->query($productsquery)
             <div class="col-md-10 store-front">
                 <?php
                 if($products->num_rows > 0){
+                    $count = 0;
                     while($row = $products->fetch_assoc()){
-                        $productid = $row["id"];
-                        $productname = $row["name"];
-                        $productimage = $row["image"];
-                        $productprice = $row["sellprice"];
-                        $productspecialprice = $row["specialprice"];
-                        
-                        echo "<div class=\"col-xs-6 col-sm-3 product\">";
-                        //output the product here
-                        echo
-                        "<a class=\"store-product\" href=\"productview.php?id=$productid\">".
-                        "<h4>$productname</h4>".
-                        "<img class=\"store-product-image responsive-image\" src=\"products/$productimage\">".
-                        "</a>";
-                        echo "<div class=\"row\">";
-                        if($productspecialprice){
-                            echo "<div class=\"col-sm-6\">
-                                    <div class=\"price strike\">$productprice</div>
+                       $productid = $row["id"];
+                       $productname = $row["name"];
+                       $productimage = $row["image"];
+                       $productprice = $row["sellprice"];
+                       $productspecialprice = $row["specialprice"];
+                       if($count == 0){
+                           echo "<div class=\"row\">";
+                       }
+                       if($count<4){
+                           echo "<div class=\"col-sm-3 product\">";
+                           echo "<h3>$productname</h3>
+                                <a class=\"store-product\" href=\"productview.php?id=$productid\">
+                                <img class=\"store-product-image responsive-image\" 
+                                src=\"products/$productimage\">
+                                </a>";
+                                //if there is special price
+                                if($productspecialprice){
+                                    echo "<p class=\"price strike\">$productprice</p>";
+                                    echo "<p class=\"price special\">$productspecialprice</p>";
+                                }
+                                else{
+                                    echo "<p class=\"price\">$productprice</p>";
+                                }
+                           echo "<div class=\"product-buttons\">
+                                    <button class=\"wish-button\" data-id=\"$productid\">
+                                        Wish It
+                                    </button>
+                                    <button class=\"buy-button\" data-id=\"$productid\">
+                                        Buy It
+                                    </button>
+                                    <select class=\" quantity\" data-id=\"$productid\">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
                                 </div>";
-                            echo "<div class=\"col-sm-6\">
-                                    <div class=\"price special\">$productspecialprice</div>
-                                </div>";
-                        }
-                        else{
-                            echo "<div class=\"col-sm-12\">
-                                <div class=\"price\">
-                                    $productprice
-                                </div>
-                            </div>";
-                        }
-                        echo "</div>";
-                        echo "<div class=\"btn-group\">
-                            <button class=\"btn btn-xs btn-default\">
-                            <i class=\"fa fa-heart\"></i> Wish It</button>
-                            <button
-                            class=\"btn btn-xs btn-default\">
-                            <i class=\"fa fa-shopping-bag\"></i> Buy It</button>
-                        </div>";
-                        echo "</div>";
-
+                           echo "</div>";
+                           $count++;
+                       }
+                       if($count>=4){
+                            echo "</div>";
+                            $count = 0;
+                       }
+                          
                     }
                 }
                 ?>
@@ -137,3 +146,62 @@ $products = $dbconnection->query($productsquery)
     </div>
 </main>
 <?php include("footer.php");?>
+<script src="scripts/shopping-cart.js"></script>
+</body>
+</html>
+
+<!--<div class="row">-->
+                <?php
+                // if($products->num_rows > 0){
+                //     while($row = $products->fetch_assoc()){
+                //         $productid = $row["id"];
+                //         $productname = $row["name"];
+                //         $productimage = $row["image"];
+                //         $productprice = $row["sellprice"];
+                //         $productspecialprice = $row["specialprice"];
+                        
+                //         echo "<div class=\"col-xs-6 col-sm-3 product\">";
+                //         //output the product here
+                //         echo
+                //         "<a class=\"store-product\" href=\"productview.php?id=$productid\">".
+                //         "<h4>$productname</h4>".
+                //         "<img class=\"store-product-image responsive-image\" src=\"products/$productimage\">".
+                //         "</a>";
+                //         echo "<div class=\"row\">";
+                //             if($productspecialprice){
+                //                 echo "<div class=\"col-sm-6\">
+                //                         <div class=\"price strike\">$productprice</div>
+                //                     </div>";
+                //                 echo "<div class=\"col-sm-6\">
+                //                         <div class=\"price special\">$productspecialprice</div>
+                //                     </div>";
+                //             }
+                //             else{
+                //                 echo "<div class=\"col-sm-12\">
+                //                         <div class=\"price\">
+                //                             $productprice
+                //                         </div>
+                //                     </div>";
+                //             }
+                //         echo "</div>";
+                //         echo "<div class=\"product-buttons\">
+                //                 <button class=\"btn btn-xs btn-default\" data-id=\"$productid\">
+                //                 <i class=\"fa fa-heart\"></i> Wish It
+                //                 </button>
+                //                 <button class=\"btn btn-xs btn-default buy-button\" data-id=\"$productid\">
+                //                 <i class=\"fa fa-shopping-bag\"></i> Buy It
+                //                 </button>
+                //                 <select class=\" quantity\" data-id=\"$productid\">
+                //                     <option>1</option>
+                //                     <option>2</option>
+                //                     <option>3</option>
+                //                     <option>4</option>
+                //                     <option>5</option>
+                //                 </select>
+                //             </div>";
+                //         echo "</div>";
+
+                //     }
+                // }
+                ?>
+            <!--</div>-->
