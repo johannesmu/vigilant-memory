@@ -49,6 +49,7 @@ $products = $dbconnection->query($productsquery);
                     $productid = $row["id"];
                     $productname = $row["name"];
                     $productprice = $row["sellprice"];
+                    $productspecialprice = $row["specialprice"];
                     $productimage = $row["image"];
                     //render product data 
                     echo 
@@ -57,7 +58,24 @@ $products = $dbconnection->query($productsquery);
                         "<a href=\"productview.php?id=$productid\">
                         <img src=\"products/$productimage\">
                         </a>";
-                    echo "<p class=\"price text-right\">$productprice</p>";
+                        if($productspecialprice){
+                        echo "<div class=\"row\">
+                                <div class=\"col-sm-6\">
+                                    <div class=\"price strike\">
+                                    $productprice
+                                    </div>
+                                </div>
+                                <div class=\"col-sm-6\">
+                                    <div class=\"price special\">
+                                    $productspecialprice
+                                    </div>
+                                </div>
+                            </div>";
+                        }
+                        else{
+                        echo "<div class=\"price\">$productprice</div>";
+                        }
+                    //echo "<p class=\"price text-right\">$productprice</p>";
                         // buttons for detail, buy and wish
                     echo "<div class=\"product-buttons\">".
                             

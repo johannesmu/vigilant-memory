@@ -20,22 +20,27 @@ if($usertoken!=$servertoken){
     die();
 }
 else{
-    $id = $_POST["id"];
-    $quantity = $_POST["quantity"];
-    $action = $_POST["action"];
-    if($action == "add"){
-        $item = array("id"=>$id,"quantity"=>$quantity);
-        // to do check if item already in cart, if not add it, if yes, just update quantity
-        array_push($_SESSION["shopping-cart"],$item);
-        $data["cart"] = json_encode($_SESSION["shopping-cart"]);
-        $data["success"] = true;
+    //if tokens are matching
+    //check if there is a POST request
+    if(count($_POST)>0){
+        $id = $_POST["id"];
+        $quantity = $_POST["quantity"];
+        $action = $_POST["action"];
+        if($action == "add"){
+            $item = array("id"=>$id,"quantity"=>$quantity);
+            // to do check if item already in cart, if not add it, if yes, just update quantity
+            array_push($_SESSION["shopping-cart"],$item);
+            $data["cart"] = json_encode($_SESSION["shopping-cart"]);
+            $data["success"] = true;
+        }
+        if($action == "read"){
+            $data["cart"] = json_encode($_SESSION["shopping-cart"]);
+            $data["success"] = true;
+        }
+        returnData($data,$errors);
     }
-    if($action == "read"){
-        $data["cart"] = json_encode($_SESSION["shopping-cart"]);
-        $data["success"] = true;
-    }
-    returnData($data,$errors);
 }
+//function to return data request as JSON 
 function returnData($data,$errors){
     if(count($errors)>0){
         $data["error"] = $errors;

@@ -139,3 +139,6 @@ special price in single product view*/
     display:inline-block;
     max-width:60px;
 }
+.search-row{
+    margin:20px 0;
+}

@@ -42,35 +42,38 @@ if($product->num_rows>0){
         <div class="row">
         <?php 
         echo 
-        "<div class=\"col-md-4 col-md-offset-2\">".
-        "<img class=\"product-detail-image responsive-image\" src=\"products/$image\">".
-        "</div>".
-         "<div class=\"col-md-4 product-detail\">".
-         "<p>$desc</p>";
-         echo "<div class=\"row\">";
+            "<div class=\"col-md-4 col-md-offset-2\">".
+                "<img class=\"product-detail-image responsive-image\" 
+                src=\"products/$image\">".
+            "</div>".
+            "<div class=\"col-md-4 product-detail\">".
+            "$desc";
+         
          if($productspecialprice){
+             echo "<div class=\"row\">";
              echo "<div class=\"col-sm-6\">
-                    <div class=\"price strike\">
-                        $productprice
-                    </div>
+                        <div class=\"price strike\">
+                            $productprice
+                        </div>
+                    </div>";
+             echo "<div class=\"col-sm-6\">
+                     <div class=\"special price\">
+                        $productspecialprice
+                     </div>
                 </div>";
-             echo "<div class=\"col-sm-6\">
-             <div class=\"special price\">
-             $productspecialprice
-             </div>
-             </div>";
+                echo "</div>";
          }
          else{
-             echo "<h4 class=\"price\">$productprice</h4>";
+             echo "<div class=\" price\">$productprice</div>";
          }
-         echo "</div>";
+         
         echo
         "<div class=\"product-buttons\">".
             "<button  
             class=\"btn btn-default wish-button\" data-id=\"$productid\">Add to Wishlist</button>".
             "<button  
             class=\"btn btn-default buy-button\" data-id=\"$productid\">Buy It</button>".
-            "<select class=\" quantity\" data-id=\"$productid\">
+            "<select class=\"form-control quantity\" data-id=\"$productid\">
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>

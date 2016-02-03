@@ -99,3 +99,12 @@ function getCartItems(getdata){
         
     });
 }
+
+function stashLocally(items){
+    if(localStorage){
+        localStorage.setItem("cart",items);
+    }
+    else{
+        console.log("error: no local storage");
+    }
+}
