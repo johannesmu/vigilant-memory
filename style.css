@@ -1,5 +1,5 @@
 .navbar-image{
-    max-width:24px;
+    max-width:30px;
 }
 .search-form{
     min-width:100%;
@@ -76,8 +76,14 @@
 }
 .product-buttons{
     margin-top:10px;
+    position:relative;
 }
-
+.product-buttons .btn{
+    color:#db371a;
+}
+.product-buttons .fa{
+    color:#db371a;
+}
 .panel{
     min-height:500px;
 }
@@ -91,6 +97,7 @@
 }
 /*animation for spinner image*/
 .spinner{
+    position:absolute;
     max-width:24px;
     animation-name:spinner;
     animation-duration:2s;
@@ -98,6 +105,22 @@
     animation-timing-function:linear;
     animation-play-state:paused;
     display:none;
+}
+.product .spinner{
+    right:18%;
+    bottom:0px;
+    transform:translateX(50%);
+    z-index:1000;
+}
+.product .alert{
+    position:absolute;
+    bottom:-30px;
+    left:0px;
+    width:auto;
+}
+.front-products .spinner{
+    right:50px;
+    bottom:5px;
 }
 @keyframes spinner{
     0%{
@@ -127,6 +150,16 @@
     width:60px;
     height:60px;
 }
+.front-products .special {
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+}
+.product .special{
+    z-index:999;
+    bottom:100px;
+}
 /*change position of the 
 special price in single product view*/
 .product-detail .special{
@@ -134,6 +167,7 @@ special price in single product view*/
 }
 .product{
     position:relative;
+    min-height:400px;
 }
 .quantity{
     display:inline-block;
@@ -142,3 +176,4 @@ special price in single product view*/
 .search-row{
     margin:20px 0;
 }
+/*user dashboard*/

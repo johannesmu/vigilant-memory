@@ -25,7 +25,7 @@ if($content->num_rows > 0){
 }
 
 //get products from database, limit to 3
-$productsquery = "SELECT id,stocklevel,category,name,sellprice,image FROM products ORDER BY sellprice DESC LIMIT 6";
+$productsquery = "SELECT id,stock,category,name,sellprice,specialprice,image FROM products ORDER BY sellprice DESC LIMIT 6";
 $products = $dbconnection->query($productsquery);
 ?>
 <main class="main">
@@ -75,7 +75,6 @@ $products = $dbconnection->query($productsquery);
                         else{
                         echo "<div class=\"price\">$productprice</div>";
                         }
-                    //echo "<p class=\"price text-right\">$productprice</p>";
                         // buttons for detail, buy and wish
                     echo "<div class=\"product-buttons\">".
                             
@@ -104,6 +103,5 @@ $products = $dbconnection->query($productsquery);
     </div>
 </main>
 <?php include("footer.php"); ?>
-<script src="scripts/shopping-cart.js"></script>
 </body>
 </html>

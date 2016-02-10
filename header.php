@@ -91,11 +91,15 @@ $pages = $dbconnection->query($pagequery);
                            if($link == "viewshoppingcart.php"){
                                $class = $class." shopping-cart";
                            }
+                           
                            echo "<li class=\"$class\"><a href=\"$link\">$name</a></li>";
                        }
                    }
                    //if page needs login
                    elseif($needlogin==1 && $_SESSION["user"]){
+                       if($link == "viewwishlist.php"){
+                           $class = $class." wishlist";
+                       }
                        echo "<li class=\"$class\"><a href=\"$link\">$name</a></li>";
                    }
                    elseif($needlogin==2 && $_SESSION["user"]["isadmin"]=='1'){
@@ -106,7 +110,7 @@ $pages = $dbconnection->query($pagequery);
            ?>
         </div>
     </div>
-    <!--we use this to show greeting for the user when logged in-->
+    <!--we use this to greet the user when logged in-->
     <div class="container user-bar">
         <div class="row">
             <div class="col-xs-12 col-md-4">
@@ -114,8 +118,9 @@ $pages = $dbconnection->query($pagequery);
         
         //display user's name if logged in
         if($_SESSION["user"]){
+            //if we know firstname 
             if($_SESSION["user"]["firstname"]){
-                //if we know firstname display it
+                //display it
                 echo "Hello <span class=\"capitalize\">".$_SESSION["user"]["firstname"]."<span>";
             }
             else{

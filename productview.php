@@ -87,6 +87,6 @@ if($product->num_rows>0){
     </div>
 </main>
 <?php include("footer.php"); ?>
-<script src="scripts/shopping-cart.js"></script>
+
 </body>
 </html>

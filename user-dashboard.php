@@ -132,6 +132,7 @@ $accountquery = "SELECT * FROM users WHERE id='$userid'";
             </div>
             <div class="col-md-6">
                 <h2>Wishlist</h2>
+                <div class="wishlist-list"></div>
             </div>
         </div>
     </div>

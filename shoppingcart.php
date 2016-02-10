@@ -28,14 +28,36 @@ else{
         $action = $_POST["action"];
         if($action == "add"){
             $item = array("id"=>$id,"quantity"=>$quantity);
-            // to do check if item already in cart, if not add it, if yes, just update quantity
-            array_push($_SESSION["shopping-cart"],$item);
+            // to do: check if item already in cart, if not add it, if yes, just update quantity
+            //find item with the same id in the array and return its index
+            //check how many items in cart
+            $itemnumbers = count($_SESSION["shopping-cart"]);
+            for($i=0;$i<$itemnumbers;$i++){
+                $itemdata = $_SESSION["shopping-cart"][$i];
+                $match = false;
+                if($itemdata["id"]==$item["id"]){
+                    //if an item is already in the cart
+                    $match=true;
+                    $quantity = $itemdata["quantity"] + $item["quantity"];
+                    $item = array("id"=>$itemdata["id"],"quantity"=>$quantity);
+                    $_SESSION["shopping-cart"][$i]=$item;
+                }
+            }
+            if(!$match){
+                array_push($_SESSION["shopping-cart"],$item);
+            }
             $data["cart"] = json_encode($_SESSION["shopping-cart"]);
             $data["success"] = true;
         }
         if($action == "read"){
             $data["cart"] = json_encode($_SESSION["shopping-cart"]);
             $data["success"] = true;
+        }
+        if($action == "list"){
+            foreach($_SESSION["shopping-cart"] as $row){
+                $id = $row["id"];
+                $quantity = $row["quantity"];
+            }
         }
         returnData($data,$errors);
     }

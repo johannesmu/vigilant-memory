@@ -33,3 +33,5 @@ if($content->num_rows > 0){
 <?php
 include("footer.php");
 ?>
+</body>
+</html>

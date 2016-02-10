@@ -44,7 +44,7 @@ else{
         //if no errors encountered in the data sent from form
         else{
             //prepare data for database
-            $username = $username;
+            $user = $username;
             //hash the password
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             //create account creation date, also lastactive date
@@ -53,7 +53,7 @@ else{
             //create the query to insert
             $createuserquery = 
             "INSERT INTO users (username,password,email,datecreated,datemodified) 
-            VALUES ('$username','$hashed_password','$email','$datecreated','$datemodified')";
+            VALUES ('$user','$hashed_password','$email','$datecreated','$datemodified')";
             //run query against database
             //if query is successful
             if (!$dbconnection->query($createuserquery) === TRUE) {
@@ -64,6 +64,31 @@ else{
                 $data["success"] = "true";
                 $data["message"] = "Yay! your account has been created!<br>
                 Hey, you wanna go <a href=\"store.php\">shopping</a>?";
+                //log user into their new account
+                $data["userr"] = $user;
+                // get user id from newly created account from the database
+                $userquery = "SELECT * FROM users WHERE username='$user'";
+                $userresult = $dbconnection->query("$userquery");
+                if($userresult->num_rows > 0){
+                    while($row = $userresult->fetch_assoc()){
+                        $storeduserid = $row["id"];
+                        $storedusername = $row["username"];
+                        $storedfirstname = $row["firstname"];
+                        $storedpassword = $row["password"];
+                        $storedemail = $row["email"];
+                        $isadmin = $row["isadmin"];
+                        
+                    }
+                    $userarray = ["id"=>$storeduserid,
+                            "name"=>$storedusername,
+                            "firstname"=>$storedfirstname,
+                            "email"=>$storedemail,
+                            "isadmin"=>$isadmin];
+                }
+                //prepare user array
+                
+               //set session variable to indicate the user is logged in
+               $_SESSION["user"] = $userarray;
             }
             
         }

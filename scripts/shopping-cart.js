@@ -1,4 +1,4 @@
-//include this script wherever there is a need to update the shopping cart
+//include this script wherever there is a need to update and show the shopping cart
 //eg in index.php, store.php and productview.php
 
 //create variable to track clicking to stop multiple clicks
@@ -13,7 +13,7 @@ $(document).ready(function(){
     //listen for when the buy button is pressed
     //we give each buy button a class of "buy-button"
     $(".buy-button").on("click",function(event){
-        //stop the click from 
+        //stop the click from performing default action
         event.preventDefault();
         //get the id of the product being bought from the data-id attribute
         //<button ... data-id="5">, etc
@@ -22,6 +22,7 @@ $(document).ready(function(){
         var quantity = $(this).siblings("select").val();
         //construct the data into a JSON string
         var buydata = {"id":productid,"quantity":quantity,"action":"add","token":token};
+        console.log(buydata);
         //now send data to the server
         updateCart(event,buydata);
     });
@@ -41,7 +42,6 @@ function updateCart(trigger,item){
                //we use beforeSend to show loading spinner
               beforeSend:function(){
                   var boughtproduct = $(trigger.target).parents(".product-buttons");
-                  console.log(boughtproduct.find(".spinner").length);
                   boughtproduct.append(spinner);
                   boughtproduct
                   .find(".spinner")
@@ -50,7 +50,7 @@ function updateCart(trigger,item){
               }
         })
         .done(function(data){
-            console.log(data.cart);
+            console.log(data);
             var cart = JSON.parse(data.cart);
             var cartlength = cart.length;
             updateCartNumber(cartlength);

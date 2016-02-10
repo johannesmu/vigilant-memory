@@ -51,4 +51,6 @@
         </div>
     </div>
 </footer>
-<?php include("scripts/client-scripts.php");?>
+<?php 
+include("scripts/client-scripts.php");
+?>

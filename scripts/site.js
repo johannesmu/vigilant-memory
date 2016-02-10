@@ -1,5 +1,5 @@
 $(document).ready(function(){
-//registration form 
+///////////////////////////registration form//////////////////////////////////////
    $("#register-form").submit(function(event){
        //clear all error messages
        $(".alert").empty().removeClass("alert-danger");
@@ -59,7 +59,7 @@ $(document).ready(function(){
             
        });
    });
-//javascipt to handle the login form
+///////////////////////javascipt to handle the login form////////////////////
    $("#login-form").submit(function(event){
        event.preventDefault();
       //colect data from the form

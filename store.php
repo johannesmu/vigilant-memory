@@ -116,13 +116,15 @@ $products = $dbconnection->query($productsquery)
                                     echo "<p class=\"price\">$productprice</p>";
                                 }
                            echo "<div class=\"product-buttons\">
-                                    <button class=\"wish-button\" data-id=\"$productid\">
-                                        Wish It
+                                    <button title=\"add this item to wish list\"
+                                            class=\"btn btn-default wish-button\" data-id=\"$productid\">
+                                        <i class=\"fa fa-heart\"></i>
                                     </button>
-                                    <button class=\"buy-button\" data-id=\"$productid\">
-                                        Buy It
+                                    <button title=\"add this item to shopping cart\"
+                                            class=\"btn btn-default buy-button\" data-id=\"$productid\">
+                                        <i class=\"fa fa-shopping-bag\"></i>
                                     </button>
-                                    <select class=\" quantity\" data-id=\"$productid\">
+                                    <select class=\"form-control quantity\" data-id=\"$productid\">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -130,8 +132,9 @@ $products = $dbconnection->query($productsquery)
                                         <option>5</option>
                                     </select>
                                 </div>";
-                           echo "</div>";
-                           $count++;
+                             echo "<div class=\"alert\"></div>";
+                            echo "</div>";
+                            $count++;
                        }
                        if($count>=4){
                             echo "</div>";
@@ -146,6 +149,5 @@ $products = $dbconnection->query($productsquery)
     </div>
 </main>
 <?php include("footer.php");?>
-<script src="scripts/shopping-cart.js"></script>
 </body>
 </html>

@@ -1,0 +1,159 @@
+//to be used to update the wishlist
+//this script needs wishlist.php and should be included in a page
+//that has a wishlist button
+$(document).ready(function(){
+    //create badge element to add to the wishlist link
+    var wbadge = "&nbsp;<span class='badge'>0</span>";
+    //attach a click listener to all buttons with class wish-button
+    //if userid does not exist, hide all the wish buttons
+    //userid is created as a javascript variable in header.php when user is logged in
+    if(typeof userid=="undefined"){
+        $(".wish-button").hide();
+    }
+    else{
+        //when the user is logged in, get the user's wishlist
+        //add the badge to the wishlist link
+        $(".wishlist a").append(wbadge);
+        var id=userid;
+        //set data request to server and set action to "get" (read wishlist.php)
+        var datarequest = {"userid":id,"token":token,"action":"get"};
+        //send data to the server
+        
+        $.ajax({
+            type: "POST",
+            url: "wishlist.php",
+            data: datarequest,
+            dataType: "json",
+            encode: true,
+            beforeSend:function(){
+               //do something to indicate loading 
+               //console.log(datarequest);
+            }
+        })
+        .done(function(data){
+            if(data.success){
+                //if data is returned, update the count of items
+                //of the wishlist in navigation
+                console.log(data);
+                try{
+                    //try to read length of wishlist
+                    updateWishlistNumber(data.result.length);
+                }
+                catch(error){
+                    //if no items in wishlist
+                    //this error is generated
+                }
+                //for user dashboard
+                upDateDashboard(data);
+                
+            }
+            else{
+                console.log(data.message);
+            }
+        })
+        .fail(function(error){
+           //do something with the error
+        })
+        .always(function(data){
+        });
+        //when wishlist button is clicked
+        $(".wish-button").click(function(event){
+            //create a reference to the alert div
+            var alertbox = $(event.target).parents(".product").find(".alert");
+            //get id of the button clicked
+            var productid = $(this).data("id");
+            var uid = userid;
+            var usertoken = token;
+            var trigger = event;
+            var wishdata = {"userid":uid,"productid":productid,"token":usertoken,"action":"set"};
+            //spinner element to be added while sending data
+            var spinner = "<img class='spinner' src='images/spinner.png'>";
+            //send data to server
+            $.ajax({
+                type: "POST",
+                url: "wishlist.php",
+                data: wishdata,
+                dataType: "json",
+                encode: true,
+                beforeSend:function(){
+                    var boughtproduct = $(trigger.target).parents(".product-buttons");
+                    boughtproduct.append(spinner);
+                    boughtproduct
+                    .find(".spinner")
+                    .show()
+                    .css("animation-play-state","running");
+                }
+            })
+            .done(function(data){
+                if(data.success){
+                    console.log(data);
+                    //update the wishlist count
+                    updateWishlistNumber(data.total);
+                    //show the alertbox
+                    alertbox.show();
+                    alertbox.addClass("alert-success")
+                    .html(data.message);
+                    //remove the alert message after a certain time
+                   setTimeout(function(){
+                       alertbox.empty();
+                       alertbox.hide();
+                       alertbox.removeClass("alert-info");
+                   },4000);
+                }
+                else{
+                    alertbox.show();
+                    alertbox.addClass("alert-info")
+                    .html(data.error.message);
+                    //remove the alert message after a certain time
+                   setTimeout(function(){
+                       alertbox.empty();
+                       alertbox.hide();
+                       alertbox.removeClass("alert-info");
+                   },4000);
+                }
+            })
+            .fail(function(data){
+                console.log(data);
+            })
+            .always(function(){
+                var boughtproduct = $(trigger.target).parents(".product-buttons");
+                boughtproduct
+                .find(".spinner")
+                .remove();
+            });
+        });
+    }
+});
+
+//functions
+function updateWishlistNumber(num){
+    $(".wishlist .badge").html(num);
+}
+
+//function to update user dashboard
+function upDateDashboard(data){
+    var length = data.result.length;
+    var i=0;
+    for(i=0;i<length;i++){
+        var obj = JSON.parse(data.result[i]);
+        var element = "<div class='row wishlist-item'>"
+        +"<div class='col-md-12'>"
+        +"<h3>"+obj.name+"</h3>"
+        +"</div>"
+        +"<div class='col-md-3'>"
+        +"<a href='productview.php?id="+obj.id+"'>"
+        +"<img class='responsive-image' src='products/"+obj.image+"'>"
+        +"</a>"
+        +"</div>"
+        +"<div class='col-md-4'>"
+        +"<span class='price'>"+obj.sellprice+"</span>"
+        +"</div>"
+        +"<div class='col-md-4'>"
+            +"<button class='btn btn-default buy-button' data-id='"+obj.id+"'>Buy It</button>"
+            +"<button class='btn btn-default wishlist-remove-button' data-id='"+obj.id+"'>&times;</button>"
+        "</div>";
+        $(".wishlist-list").append(element);
+    }
+    //after adding the wishlist content to the user dashboard,
+    //add listener for click on the delete button
+}
