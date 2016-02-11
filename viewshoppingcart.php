@@ -18,7 +18,7 @@ if(count($_SESSION["shopping-cart"])>0){
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2 cart-list">
-                <h1>Items in your Cart</h1>
+                <h2>Items in your shopping cart</h2>
                 
             </div>
         </div>

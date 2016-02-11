@@ -6,7 +6,7 @@ $data = array();
 $errors = array();
 // if shopping cart session does not exist, create the object
 //as an array in a session variable
-//debug only
+//uncomment the following line for debug only (to flush the shopping cart)
 //unset($_SESSION["shopping-cart"]);
 if(isset($_SESSION["shopping-cart"])==false){
     $_SESSION["shopping-cart"] = array();
@@ -34,10 +34,14 @@ else{
             $itemnumbers = count($_SESSION["shopping-cart"]);
             for($i=0;$i<$itemnumbers;$i++){
                 $itemdata = $_SESSION["shopping-cart"][$i];
+                //set match variable to see if the id of item clicked
+                //already is in shopping cart
                 $match = false;
                 if($itemdata["id"]==$item["id"]){
                     //if an item is already in the cart
                     $match=true;
+                    //update only the quantity instead of creating duplicate
+                    //items in the shopping cart
                     $quantity = $itemdata["quantity"] + $item["quantity"];
                     $item = array("id"=>$itemdata["id"],"quantity"=>$quantity);
                     $_SESSION["shopping-cart"][$i]=$item;
@@ -57,20 +61,38 @@ else{
         if($action == "list"){
             //get all data from SESSION variable called "shopping-cart" and send back
             //as an array of objects
+            //create the array
             $items = array();
-            foreach($_SESSION["shopping-cart"] as $row){
-                $id = $row["id"];
-                $quantity = $row["quantity"];
+            //create total price variable
+            $totalprice = 0;
+            foreach($_SESSION["shopping-cart"] as $cart){
+                //get the id of item from shopping cart
+                $id = $cart["id"];
+                //get the quantity of the item
+                $quantity = $cart["quantity"];
+                //query to retrieve product info from database
                 $productquery = "SELECT name,image,sellprice,specialprice,brand
                                 FROM products WHERE id='$id'";
+                //retrieve the info
                 $productresult = $dbconnection->query($productquery);
+                
+                //store result as an associative array in $result
                 $result = $productresult->fetch_assoc();
+                //add product id and quantity to associative array
                 $result["id"] = $id;
                 $result["quantity"] = $quantity;
+                if($result["specialprice"]){
+                    $totalprice += $result["specialprice"];
+                }
+                else{
+                    $totalprice += $result["sellprice"];
+                }
+                //add $result array to $items array in a json format
                 array_push($items,json_encode($result));
             }
             $data["success"] = "true";
             $data["result"] = $items;
+            $data["totalprice"] = $totalprice;
         }
         if($action == "delete"){
             //this action is to remove an item from the shopping cart

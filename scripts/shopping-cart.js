@@ -128,27 +128,42 @@ function showCartItems(){
             for(i=0;i<data.result.length;i++){
                 var cartobj = JSON.parse(data.result[i]);
                 var price;
-                if(!cartobj.specialprice){
-                    price = cartobj.sellprice;
+                var priceclass;
+                if(cartobj.specialprice!=0){
+                    price = cartobj.specialprice;
+                    priceclass = "special";
                 }
                 else{
-                    price = cartobj.specialprice;
+                    price = cartobj.sellprice;
+                    priceclass="";
                 }
                 var cartrow ="<div class='cart-row'>"
+                            +"<a href='productview.php?id="+cartobj.id+"'>"
                             +"<div class='cart-item-image'>"
                                 +"<img src='products/"+cartobj.image+"'>"
                             +"</div>"
+                            +"</a>"
                             +"<div class='cart-item-name'>"
                                 +"<h4>"+cartobj.name+"</h4>"
                             +"</div>"
-                            +"<div class='cart-item-price'>"
-                                +cartobj.sellprice
+                            +"<div class='cart-item-price price'>"
+                                +price
                             +"</div>"
-                        +"</div>";
+                            +"<div class='cart-item-qty'>"
+                            +"<input type='number' class='form-control' name='quantity' value='"+cartobj.quantity+"'>"
+                            +"</div>"
+                            +"<button class='btn btn-default btn-warning cart-item-remove'>&times;</button>"
+                            +"</div>";
                 
                 $(".cart-list").append(cartrow);
+                if(priceclass=="special"){
+                    $(".cart-item-price").addClass("special");
+                }
             }
-            
+            var totalrow = "<div class='cart-total'>Total Price: "
+                            +"<span class='price'>"+data.totalprice
+                            +"</div>";
+            $(".cart-list").append(totalrow);
         }
     });
 }
