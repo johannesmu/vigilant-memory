@@ -177,3 +177,36 @@ special price in single product view*/
     margin:20px 0;
 }
 /*user dashboard*/
+.wishlist-item{
+    margin:20px 0;
+    border:1px solid #eeeeee;
+    border-radius:4px;
+    padding:10px;
+    position:relative;
+    overflow:hidden;
+}
+.wishlist-item .spinner{
+    position:absolute;
+    bottom:0;
+    z-index:1000;
+}
+.wishlist-item-info{
+    display:flex;
+    flex-direction:row;
+}
+.wishlist-item-image{
+    max-width:200px;
+    padding:10px;
+}
+.wishlist-item-price{
+    padding:0 10px;
+    display:flex;
+    flex-direction:row;
+    align-items:flex-end;
+}
+.wishlist-action{
+    display:flex;
+    flex-direction:row;
+    align-items:flex-end;
+    min-width:200px;
+}

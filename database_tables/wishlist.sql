@@ -23,31 +23,17 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Table structure for table `wishlist`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
+CREATE TABLE IF NOT EXISTS `wishlist` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
-  `username` varchar(128) NOT NULL,
-  `email` varchar(256) NOT NULL,
-  `password` varchar(256) NOT NULL,
-  `firstname` varchar(128) NOT NULL,
-  `lastname` varchar(128) NOT NULL,
-  `apartment` varchar(6) NOT NULL,
-  `streetnumber` varchar(6) NOT NULL,
-  `streetname` varchar(256) NOT NULL,
-  `suburb` varchar(128) NOT NULL,
-  `state` varchar(128) NOT NULL,
-  `postcode` varchar(8) NOT NULL,
-  `country` varchar(256) NOT NULL,
-  `isadmin` tinyint(1) NOT NULL DEFAULT '0',
-  `datecreated` datetime NOT NULL,
-  `datemodified` datetime NOT NULL,
-  `token` varchar(256) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`),
-  KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+  `productid` varchar(12) NOT NULL,
+  `userid` varchar(64) NOT NULL,
+  `datecreated` date NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=132 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

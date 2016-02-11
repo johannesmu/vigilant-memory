@@ -34,21 +34,19 @@ $(document).ready(function(){
             if(data.success){
                 //if data is returned, update the count of items
                 //of the wishlist in navigation
-                console.log(data);
                 try{
                     //try to read length of wishlist
                     updateWishlistNumber(data.result.length);
                 }
                 catch(error){
-                    //if no items in wishlist
-                    //this error is generated
+                    updateWishlistNumber(0);
                 }
-                //for user dashboard
-                upDateDashboard(data);
+                //for updating user dashboard
+                updateDashboard(data);
                 
             }
             else{
-                console.log(data.message);
+                //console.log(data.message);
             }
         })
         .fail(function(error){
@@ -86,7 +84,7 @@ $(document).ready(function(){
             })
             .done(function(data){
                 if(data.success){
-                    console.log(data);
+                    //console.log(data);
                     //update the wishlist count
                     updateWishlistNumber(data.total);
                     //show the alertbox
@@ -113,7 +111,7 @@ $(document).ready(function(){
                 }
             })
             .fail(function(data){
-                console.log(data);
+                //console.log(data);
             })
             .always(function(){
                 var boughtproduct = $(trigger.target).parents(".product-buttons");
@@ -131,29 +129,67 @@ function updateWishlistNumber(num){
 }
 
 //function to update user dashboard
-function upDateDashboard(data){
+function updateDashboard(data){
     var length = data.result.length;
     var i=0;
     for(i=0;i<length;i++){
         var obj = JSON.parse(data.result[i]);
-        var element = "<div class='row wishlist-item'>"
-        +"<div class='col-md-12'>"
+        var element = "<div class='wishlist-item'>"
         +"<h3>"+obj.name+"</h3>"
-        +"</div>"
-        +"<div class='col-md-3'>"
-        +"<a href='productview.php?id="+obj.id+"'>"
-        +"<img class='responsive-image' src='products/"+obj.image+"'>"
-        +"</a>"
-        +"</div>"
-        +"<div class='col-md-4'>"
-        +"<span class='price'>"+obj.sellprice+"</span>"
-        +"</div>"
-        +"<div class='col-md-4'>"
-            +"<button class='btn btn-default buy-button' data-id='"+obj.id+"'>Buy It</button>"
-            +"<button class='btn btn-default wishlist-remove-button' data-id='"+obj.id+"'>&times;</button>"
-        "</div>";
+        +"<div class='wishlist-item-info'>"
+            +"<div class='wishlist-item-image'>"
+                +"<a href='productview.php?id="+obj.id+"'>"
+                +"<img class='responsive-image' src='products/"+obj.image+"'>"
+                +"</a>"
+            +"</div>"
+            +"<div class='wishlist-item-price'>"
+                +"<span class='price'>"+obj.sellprice+"</span>"
+            +"</div>"
+            +"<div class='wishlist-action product-buttons'>"
+                +"<button class='btn btn-default buy-button' data-id='"+obj.id+"'>Buy It</button>"
+                +"<button class='btn btn-default wishlist-remove-button' data-id='"+obj.id+"'>&times;</button>"
+            +"</div>"
+        +"</div>";
         $(".wishlist-list").append(element);
     }
     //after adding the wishlist content to the user dashboard,
     //add listener for click on the delete button
+    $(".buy-button").on("click",function(event){
+        var id = $(event.target).data("id");
+        var qty = 1;
+        var buydata = {"id":id,"quantity":qty,"action":"add","token":token};
+        //this function is in shopping-cart.js
+        updateCart(event,buydata);
+    });
+    //when remove button is clicked, remove item from wishlist
+    $(".wishlist-remove-button").on("click",function(event){
+        var id = $(event.target).data("id");
+        removeItemFromWishlist(event,id);
+    });
+}
+
+function removeItemFromWishlist(event,productid){
+    //create data to send to server
+    var deletedata = {"userid":userid,"productid":productid,"action":"remove","token":token};
+    $.ajax({
+        type: "POST",
+        url: "wishlist.php",
+        data: deletedata,
+        dataType: "json",
+        encode: true,
+        beforeSend:function(){
+            var spinner = "<img class='spinner' src='images/spinner.png'>";
+            $(event.target).parents(".product-buttons").append(spinner);
+            $(event.target).parents(".product-buttons")
+            .find(".spinner")
+            .show()
+            .css("animation-play-state","running");
+        }
+    })
+    .done(function(data){
+        if(data.success){
+            $(event.target).parents(".wishlist-item").remove();
+            updateWishlistNumber(data.result);
+        }
+    });
 }

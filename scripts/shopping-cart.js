@@ -8,7 +8,7 @@ $(document).ready(function(){
     var badge = "&nbsp;<span class='badge'>0</span>";
     $(".shopping-cart a").append(badge);
     //get the existing cart and display the total items
-    var cartdata = {"action":"read","token":token};
+    var cartdata = {"action":"get","token":token};
     getCartItems(cartdata);
     //listen for when the buy button is pressed
     //we give each buy button a class of "buy-button"
@@ -21,8 +21,7 @@ $(document).ready(function(){
         //get the quantity being bought
         var quantity = $(this).siblings("select").val();
         //construct the data into a JSON string
-        var buydata = {"id":productid,"quantity":quantity,"action":"add","token":token};
-        console.log(buydata);
+        var buydata = {"id":productid,"quantity":quantity,"action":"set","token":token};
         //now send data to the server
         updateCart(event,buydata);
     });

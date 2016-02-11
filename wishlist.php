@@ -95,8 +95,12 @@ else{
         }
         if($action=="remove"){
             $removequery = "DELETE FROM wishlist WHERE productid='$productid' 
-                            AND userid='$productid'";
+                            AND userid='$userid'";
             if($dbconnection->query($removequery)){
+                $countitemsquery = "SELECT productid FROM wishlist WHERE userid='$userid'";
+                $result = $dbconnection->query($countitemsquery);
+                $count = $result->num_rows;
+                $data["result"]=$count;
                 $data["success"]="true";
                 $data["message"]="Item removed from wishlist";
             }

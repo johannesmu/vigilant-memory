@@ -26,7 +26,7 @@ else{
         $id = $_POST["id"];
         $quantity = $_POST["quantity"];
         $action = $_POST["action"];
-        if($action == "add"){
+        if($action == "set"){
             $item = array("id"=>$id,"quantity"=>$quantity);
             // to do: check if item already in cart, if not add it, if yes, just update quantity
             //find item with the same id in the array and return its index
@@ -49,15 +49,25 @@ else{
             $data["cart"] = json_encode($_SESSION["shopping-cart"]);
             $data["success"] = true;
         }
-        if($action == "read"){
+        if($action == "get"){
             $data["cart"] = json_encode($_SESSION["shopping-cart"]);
             $data["success"] = true;
         }
         if($action == "list"){
+            $items = array();
             foreach($_SESSION["shopping-cart"] as $row){
                 $id = $row["id"];
                 $quantity = $row["quantity"];
+                $productquery = "SELECT name,image,sellprice,specialprice,brand
+                                FROM products WHERE id='$id'";
+                $productresult = $dbconnection->query($productquery);
+                $result = $productresult->fetch_assoc();
+                $result["id"] = $id;
+                $result["quantity"] = $quantity;
+                array_push($items,json_encode($result));
             }
+            $data["success"] = "true";
+            $data["result"] = $items;
         }
         returnData($data,$errors);
     }
@@ -69,9 +79,6 @@ function returnData($data,$errors){
     }
     echo json_encode($data);
 }
-//get the GET variable
-//check actions
-//add items to $cart variable and return number of items
-//if required, display the items in a list
+
 
 ?>
