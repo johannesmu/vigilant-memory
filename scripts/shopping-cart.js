@@ -10,6 +10,12 @@ $(document).ready(function(){
     //get the existing cart and display the total items
     var cartdata = {"action":"get","token":token};
     getCartItems(cartdata);
+    
+    //when in viewshoppingcart.php, check if there is an element
+    //with class of "cart-list"
+    
+        showCartItems();
+    
     //listen for when the buy button is pressed
     //we give each buy button a class of "buy-button"
     $(".buy-button").on("click",function(event){
@@ -66,6 +72,7 @@ function updateCart(trigger,item){
         });
     }
 }
+
 //function to update cart number
 function updateCartNumber(num){
     $(".shopping-cart .badge").html(num);
@@ -99,11 +106,49 @@ function getCartItems(getdata){
     });
 }
 
-function stashLocally(items){
-    if(localStorage){
-        localStorage.setItem("cart",items);
-    }
-    else{
-        console.log("error: no local storage");
-    }
+function showCartItems(){
+    var listdata = {"action":"list","token":token};
+    $.ajax({
+        type: "POST",
+        url: "shoppingcart.php",
+        data: listdata,
+        dataType: "json",
+        encode: true,
+        //we use beforeSend to show loading spinner
+        beforeSend:function(){
+          
+      }
+    })
+    .done(function(data){
+        if(data.success){
+            console.log(data);
+            //create an element to render the shopping cart
+            
+            var i=0;
+            for(i=0;i<data.result.length;i++){
+                var cartobj = JSON.parse(data.result[i]);
+                var price;
+                if(!cartobj.specialprice){
+                    price = cartobj.sellprice;
+                }
+                else{
+                    price = cartobj.specialprice;
+                }
+                var cartrow ="<div class='cart-row'>"
+                            +"<div class='cart-item-image'>"
+                                +"<img src='products/"+cartobj.image+"'>"
+                            +"</div>"
+                            +"<div class='cart-item-name'>"
+                                +"<h4>"+cartobj.name+"</h4>"
+                            +"</div>"
+                            +"<div class='cart-item-price'>"
+                                +cartobj.sellprice
+                            +"</div>"
+                        +"</div>";
+                
+                $(".cart-list").append(cartrow);
+            }
+            
+        }
+    });
 }

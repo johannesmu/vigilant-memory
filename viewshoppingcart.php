@@ -9,14 +9,7 @@ if(count($_SESSION["shopping-cart"])>0){
     foreach($_SESSION["shopping-cart"] as $row){
     $id = $row["id"];
     $quantity = $row["quantity"];
-    echo var_dump($row);
-    //echo $id."&nbsp".$quantity."<br>";
-    //get image and description for each item
-    $query = "SELECT id,name,description,price,specialprice,image FROM products WHERE id='$id'";
-    // $result = $dbconnection->query($query);
-    //     $dbrow = $result->fetch_assoc();
-    //     $productid = $dbrow["id"];
-    //     echo $productid;
+    
     }
 }
 
@@ -24,33 +17,9 @@ if(count($_SESSION["shopping-cart"])>0){
 <main class="main">
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2 cart-container">
+            <div class="col-md-8 col-md-offset-2 cart-list">
                 <h1>Items in your Cart</h1>
-                <div class="row cart-row">
-                    <div class="col-xs-2">
-                        
-                    </div>
-                    <div class="col-xs-4">
-                        Item Name
-                    </div>
-                    <div class="col-xs-2">
-                        Quantity
-                    </div>
-                </div>
-                 <div class="row cart-row">
-                    <div class="col-xs-2">
-                        Item Img
-                    </div>
-                    <div class="col-xs-4">
-                        Item Name
-                    </div>
-                    <div class="col-xs-2">
-                        <input class="form-control" type="number">
-                    </div>
-                     <div class="col-xs-2">
-                        <button class="btn btn-default">&times;</button>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>

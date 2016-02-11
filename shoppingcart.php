@@ -53,7 +53,10 @@ else{
             $data["cart"] = json_encode($_SESSION["shopping-cart"]);
             $data["success"] = true;
         }
+        //action "list" is to show shopping cart with each item having a complete data set
         if($action == "list"){
+            //get all data from SESSION variable called "shopping-cart" and send back
+            //as an array of objects
             $items = array();
             foreach($_SESSION["shopping-cart"] as $row){
                 $id = $row["id"];
@@ -68,6 +71,9 @@ else{
             }
             $data["success"] = "true";
             $data["result"] = $items;
+        }
+        if($action == "delete"){
+            //this action is to remove an item from the shopping cart
         }
         returnData($data,$errors);
     }

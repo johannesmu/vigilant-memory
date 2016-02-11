@@ -210,3 +210,13 @@ special price in single product view*/
     align-items:flex-end;
     min-width:200px;
 }
+.cart-row{
+    display:flex;
+    flex-direction:row;
+}
+.cart-item-image{
+    max-width:150px;
+}
+.cart-item-image img{
+    width:100%;
+}
