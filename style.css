@@ -122,6 +122,10 @@
     right:50px;
     bottom:5px;
 }
+.cart-item-remove .spinner{
+    position:static;
+    width:18px;
+}
 @keyframes spinner{
     0%{
         transform:rotate(0deg);

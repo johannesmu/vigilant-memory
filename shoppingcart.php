@@ -33,7 +33,8 @@ else{
             //check how many items in cart
             $itemnumbers = count($_SESSION["shopping-cart"]);
             for($i=0;$i<$itemnumbers;$i++){
-                $itemdata = $_SESSION["shopping-cart"][$i];
+                $itemincart = $_SESSION["shopping-cart"][$i];
+                //$checkitemincart = updateCartQuantity($itemincart,$item,$i);
                 //set match variable to see if the id of item clicked
                 //already is in shopping cart
                 $match = false;
@@ -66,21 +67,7 @@ else{
             //create total price variable
             $totalprice = 0;
             foreach($_SESSION["shopping-cart"] as $cart){
-                //get the id of item from shopping cart
-                $id = $cart["id"];
-                //get the quantity of the item
-                $quantity = $cart["quantity"];
-                //query to retrieve product info from database
-                $productquery = "SELECT name,image,sellprice,specialprice,brand
-                                FROM products WHERE id='$id'";
-                //retrieve the info
-                $productresult = $dbconnection->query($productquery);
-                
-                //store result as an associative array in $result
-                $result = $productresult->fetch_assoc();
-                //add product id and quantity to associative array
-                $result["id"] = $id;
-                $result["quantity"] = $quantity;
+                $result = getCartItemData($cart,$dbconnection);
                 if($result["specialprice"]){
                     $totalprice += $result["specialprice"];
                 }
@@ -94,8 +81,39 @@ else{
             $data["result"] = $items;
             $data["totalprice"] = $totalprice;
         }
+        if($action == "update"){
+            //update an item quantity
+            //find item in the cart and update its quantity
+        }
         if($action == "delete"){
             //this action is to remove an item from the shopping cart
+            //get id of item to be deleted
+            $id = $_POST["id"];
+            //id
+            $id = $_POST["id"];
+            //find the number of items in shopping cart
+            $length = count($_SESSION["shopping-cart"]);
+            for($i=0;$i<$length;$i++){
+                $currentrow = $_SESSION["shopping-cart"][$i];
+                if($currentrow["id"]==$id){
+                    unset($_SESSION["shopping-cart"][$i]["id"]);
+                    unset($_SESSION["shopping-cart"][$i]["quantity"]);
+                    unset($_SESSION["shopping-cart"][$i]);
+                    $_SESSION["shopping-cart"] = array_values($_SESSION["shopping-cart"]);
+                    $data["message"]="item deleted";
+                }
+                else{
+                    $item = array("id"=>$id);
+                    $data["message"]="wtf ";
+                }
+            }
+            $data["length"]=count($_SESSION["shopping-cart"]);
+            $data["success"]="true";
+            $data["totalprice"]=$totalprice;
+        }
+        if($action == "updatetotal"){
+            $id = $_POST["id"];
+            
         }
         returnData($data,$errors);
     }
@@ -108,5 +126,45 @@ function returnData($data,$errors){
     echo json_encode($data);
 }
 
+function updateCartQuantity($cartid,$requestid,$index){
+    if($cartid==$requestid){
+        //update only the quantity instead of creating duplicate
+        //items in the shopping cart
+        $quantity = $itemdata["quantity"] + $item["quantity"];
+        $item = array("id"=>$itemdata["id"],"quantity"=>$quantity);
+        //$_SESSION["shopping-cart"][$i]=$item;
+    }
+}
 
+//this function retrieves a cart item (id and quantity) information using a database connection
+function getCartItemData($cartitem,$connection){
+    $id = $cartitem["id"];
+    if($cartitem["quantity"]){
+        $quantity = $cartitem["quantity"];
+    }
+    $itemquery = "SELECT name,image,sellprice,specialprice,brand FROM products WHERE id='$id'";
+    $itemresult = $connection->query($itemquery);
+    if($itemresult->num_rows>0){
+        $infoarray = $itemresult->fetch_assoc();
+        //add id and quantity to the info array
+        $infoarray["id"]=$id;
+        if($cartitem["quantity"]){
+            $infoarray["quantity"]=$quantity;
+        }
+    }
+    else{
+        //no matching data in the database
+        $infoarray["error"]="sorry bro, no data found";
+    }
+    return $infoarray;
+}
+//this function gets tht total price of cart items
+function getCartTotalPrice(){
+    $totalprice;
+    foreach($_SESSION["shopping-cart"] as $cart){
+        //get the item price from database
+        $query = "SELECT price,specialprice FROM products WHERE id='$id'";
+        
+    }
+}
 ?>

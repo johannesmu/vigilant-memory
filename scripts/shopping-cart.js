@@ -1,11 +1,13 @@
 //include this script wherever there is a need to update and show the shopping cart
 //eg in index.php, store.php and productview.php
-
+//add "badge" (number showing item total in cart)to shopping cart on navbar when page loads
+var badge = "&nbsp;<span class='badge'>0</span>";
+var spinner = "<img class='spinner' src='images/spinner.png'>";
 //create variable to track clicking to stop multiple clicks
+//when adding to cart
 var submitting = false;
 $(document).ready(function(){
-    //add "badge" (number showing item total in cart)to shopping cart on navbar when page loads
-    var badge = "&nbsp;<span class='badge'>0</span>";
+    
     $(".shopping-cart a").append(badge);
     //get the existing cart and display the total items
     var cartdata = {"action":"get","token":token};
@@ -35,7 +37,6 @@ $(document).ready(function(){
 
 function updateCart(trigger,item){
     //create a string used to add the spinner image
-    var spinner = "<img class='spinner' src='images/spinner.png'>";
     if(!submitting){
         submitting = true;
         $.ajax({
@@ -64,8 +65,11 @@ function updateCart(trigger,item){
             console.log(error);
         })
         .always(function(){
+            //set submitting to false
             submitting = false;
+            //create a reference to the product buttons element
             var boughtproduct = $(trigger.target).parents(".product-buttons");
+            //find the spinner in it and remove it
             boughtproduct
             .find(".spinner")
             .remove();
@@ -106,6 +110,7 @@ function getCartItems(getdata){
     });
 }
 
+//function to list items in the shopping cart (in viewshoppingcart.php)
 function showCartItems(){
     var listdata = {"action":"list","token":token};
     $.ajax({
@@ -121,25 +126,23 @@ function showCartItems(){
     })
     .done(function(data){
         if(data.success){
-            console.log(data);
             //create an element to render the shopping cart
-            
             var i=0;
             for(i=0;i<data.result.length;i++){
                 var cartobj = JSON.parse(data.result[i]);
                 var price;
-                var priceclass;
+                var special;
                 if(cartobj.specialprice!=0){
                     price = cartobj.specialprice;
-                    priceclass = "special";
+                    special = true;
                 }
                 else{
                     price = cartobj.sellprice;
-                    priceclass="";
+                    special = false;
                 }
-                var cartrow ="<div class='cart-row'>"
+                var cartrow ="<div class='cart-row' id='"+cartobj.id+"'>"
                             +"<a href='productview.php?id="+cartobj.id+"'>"
-                            +"<div class='cart-item-image'>"
+                            +"<div class='cart-item-image' data-id='"+cartobj.id+"'>"
                                 +"<img src='products/"+cartobj.image+"'>"
                             +"</div>"
                             +"</a>"
@@ -150,20 +153,62 @@ function showCartItems(){
                                 +price
                             +"</div>"
                             +"<div class='cart-item-qty'>"
-                            +"<input type='number' class='form-control' name='quantity' value='"+cartobj.quantity+"'>"
+                            +"<input type='number' class='item-quantity form-control' name='quantity' value='"+cartobj.quantity+"' data-id='"+cartobj.id+"'>"
                             +"</div>"
-                            +"<button class='btn btn-default btn-warning cart-item-remove'>&times;</button>"
+                            +"<button class='btn btn-default cart-item-remove'>&times;</button>"
                             +"</div>";
                 
                 $(".cart-list").append(cartrow);
-                if(priceclass=="special"){
-                    $(".cart-item-price").addClass("special");
+                if(special){
+                    var select = "#"+cartobj.id+" .cart-item-price";
+                    $(select).addClass("special");
                 }
+            //end of for loop
             }
             var totalrow = "<div class='cart-total'>Total Price: "
                             +"<span class='price'>"+data.totalprice
                             +"</div>";
             $(".cart-list").append(totalrow);
+            //add listener for changes to quantity
+            $(".item-quantity").change(function(event){
+                //get which row changed
+                var itemid = $(this).data("id");
+                var quantity = $(this).val();
+                //construct data to send
+                var updatedata = {"id":itemid,"quantity":quantity,"token":token,"action":"update"};
+                //send data to server to update quantity
+            });
+            //add listener to the delete button(s)
+            addDeleteListener(".cart-item-remove");
         }
+    });
+   
+}
+
+function addDeleteListener(selector){
+    $(selector).on("click",function(event){
+        var id = $(this).parents(".cart-row").attr("id");
+        //construct data to send to server
+        var deletedata = {"id":id,"action":"delete","token":token};
+        $.ajax({
+        type: "POST",
+        url: "shoppingcart.php",
+        data: deletedata,
+        dataType: "json",
+        encode: true,
+        //we use beforeSend to show loading spinner
+        beforeSend:function(){
+            $(event.target).html(spinner);
+            $(event.target).find(".spinner").show().css("animation-play-state","running");
+          }
+        })
+        .done(function(data){
+            console.log(data);
+            $(event.target).parents(".cart-row").remove();
+            updateCartNumber(data.length);
+            if(data.length==0){
+                $(".cart-total").hide();
+            }
+        });
     });
 }
