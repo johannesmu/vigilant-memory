@@ -224,6 +224,8 @@ special price in single product view*/
     border-radius:8px;
     margin:10px 0;
     position:relative;
+    overflow:hidden;
+    transition:all 1s;
 }
 .cart-item-image{
     max-width:150px;
@@ -243,7 +245,7 @@ special price in single product view*/
 .cart-item-price{
     font-size:18px;
     font-weight:600;
-    padding:28px 20px;
+    padding:28px 0px;
 }
 .cart-item-price.special{
     position:static;
@@ -264,4 +266,19 @@ special price in single product view*/
     width:auto;
     display:inline;
     padding:0;
+}
+.empty-sign{
+    color:#cccccc;
+}
+.empty-sign::before{
+    content:"\201c";
+}
+.empty-sign::after{
+    content:"\201d \000a Dalai Lama";
+    white-space:break-after;
+}
+.cart-buttons{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
 }

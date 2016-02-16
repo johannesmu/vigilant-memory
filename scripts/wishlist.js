@@ -130,27 +130,33 @@ function updateWishlistNumber(num){
 
 //function to update user dashboard
 function updateDashboard(data){
-    var length = data.result.length;
-    var i=0;
-    for(i=0;i<length;i++){
-        var obj = JSON.parse(data.result[i]);
-        var element = "<div class='wishlist-item'>"
-        +"<h3>"+obj.name+"</h3>"
-        +"<div class='wishlist-item-info'>"
-            +"<div class='wishlist-item-image'>"
-                +"<a href='productview.php?id="+obj.id+"'>"
-                +"<img class='responsive-image' src='products/"+obj.image+"'>"
-                +"</a>"
-            +"</div>"
-            +"<div class='wishlist-item-price'>"
-                +"<span class='price'>"+obj.sellprice+"</span>"
-            +"</div>"
-            +"<div class='wishlist-action product-buttons'>"
-                +"<button class='btn btn-default buy-button' data-id='"+obj.id+"'>Buy It</button>"
-                +"<button class='btn btn-default wishlist-remove-button' data-id='"+obj.id+"'>&times;</button>"
-            +"</div>"
-        +"</div>";
-        $(".wishlist-list").append(element);
+    if(data.result.length>0 && data.result.length != "undefined"){
+        var length = data.result.length;
+        var i=0;
+        for(i=0;i<length;i++){
+            var obj = JSON.parse(data.result[i]);
+            var element = "<div class='wishlist-item'>"
+            +"<h3>"+obj.name+"</h3>"
+            +"<div class='wishlist-item-info'>"
+                +"<div class='wishlist-item-image'>"
+                    +"<a href='productview.php?id="+obj.id+"'>"
+                    +"<img class='responsive-image' src='products/"+obj.image+"'>"
+                    +"</a>"
+                +"</div>"
+                +"<div class='wishlist-item-price'>"
+                    +"<span class='price'>"+obj.sellprice+"</span>"
+                +"</div>"
+                +"<div class='wishlist-action product-buttons'>"
+                    +"<button class='btn btn-default buy-button' data-id='"+obj.id+"'>Buy It</button>"
+                    +"<button class='btn btn-default wishlist-remove-button' data-id='"+obj.id+"'>&times;</button>"
+                +"</div>"
+            +"</div>";
+            $(".wishlist-list").append(element);
+        }
+    }
+    else{
+        var message = "<h1 class='empty-sign'>Stare into the emptiness</h1>"
+        $(".wishlist-list").append(message);
     }
     //after adding the wishlist content to the user dashboard,
     //add listener for click on the delete button

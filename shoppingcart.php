@@ -26,6 +26,7 @@ else{
         $id = $_POST["id"];
         $quantity = $_POST["quantity"];
         $action = $_POST["action"];
+        //ADD AN ITEM TO THE SHOPPING CART
         if($action == "set"){
             $item = array("id"=>$id,"quantity"=>$quantity);
             // to do: check if item already in cart, if not add it, if yes, just update quantity
@@ -58,6 +59,7 @@ else{
             $data["cart"] = json_encode($_SESSION["shopping-cart"]);
             $data["success"] = true;
         }
+        //LIST ALL SHOPPING CART ITEMS
         //action "list" is to show shopping cart with each item having a complete data set
         if($action == "list"){
             //get all data from SESSION variable called "shopping-cart" and send back
@@ -67,12 +69,13 @@ else{
             //create total price variable
             $totalprice = 0;
             foreach($_SESSION["shopping-cart"] as $cart){
+                $quantity = $cart["quantity"];
                 $result = getCartItemData($cart,$dbconnection);
                 if($result["specialprice"]){
-                    $totalprice += $result["specialprice"];
+                    $totalprice += $result["specialprice"]*$quantity;
                 }
                 else{
-                    $totalprice += $result["sellprice"];
+                    $totalprice += $result["sellprice"]*$quantity;
                 }
                 //add $result array to $items array in a json format
                 array_push($items,json_encode($result));
@@ -85,6 +88,7 @@ else{
             //update an item quantity
             //find item in the cart and update its quantity
         }
+        //DELETING ITEM FROM CART
         if($action == "delete"){
             //this action is to remove an item from the shopping cart
             //get id of item to be deleted
@@ -109,11 +113,16 @@ else{
             }
             $data["length"]=count($_SESSION["shopping-cart"]);
             $data["success"]="true";
-            $data["totalprice"]=$totalprice;
+            $data["totalprice"]=getCartTotalPrice($_SESSION["shopping-cart"],$dbconnection);
         }
-        if($action == "updatetotal"){
-            $id = $_POST["id"];
-            
+        if($action == "update"){
+            $total = getCartTotalPrice($_SESSION["shopping-cart"],$dbconnection);
+            if($total>0){
+            }
+        }
+        if($action == "empty"){
+            unset($_SESSION["shopping-cart"]);
+            $data["success"]="true";
         }
         returnData($data,$errors);
     }
@@ -159,12 +168,25 @@ function getCartItemData($cartitem,$connection){
     return $infoarray;
 }
 //this function gets tht total price of cart items
-function getCartTotalPrice(){
-    $totalprice;
+function getCartTotalPrice($array,$connection){
+    $totalprice=0;
     foreach($_SESSION["shopping-cart"] as $cart){
+        $id = $cart["id"];
+        $quantity = $cart["quantity"];
         //get the item price from database
-        $query = "SELECT price,specialprice FROM products WHERE id='$id'";
+        $query = "SELECT sellprice,specialprice FROM products WHERE id='$id'";
+        $result = $connection->query($query);
+        $row = $result->fetch_assoc();
+        $specialprice = $row["specialprice"];
+        $sellprice = $row["sellprice"];
+        if($specialprice){
+            $totalprice+=$specialprice*$quantity;
+        }
+        else{
+            $totalprice+=$sellprice*$quantity;
+        }
         
     }
+    return $totalprice;
 }
 ?>

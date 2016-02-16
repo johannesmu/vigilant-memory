@@ -168,7 +168,19 @@ function showCartItems(){
             var totalrow = "<div class='cart-total'>Total Price: "
                             +"<span class='price'>"+data.totalprice
                             +"</div>";
-            $(".cart-list").append(totalrow);
+            var buttonrow = "<div class='cart-buttons'></div>";
+            var emptycart = "<button class='btn btn-warning cart-empty'>Empty Cart</button>";
+            var checkout = "<button class='btn btn-success cart-checkout'>Check Out</button>";
+            if(data.result.length>0){
+                $(".cart-list").append(totalrow);
+                $(".cart-list").append(buttonrow);
+                $(".cart-buttons").append(emptycart);
+                 $(".cart-buttons").append(checkout);
+                 addEmptyCartListener();
+            }
+            else{
+                showEmpty(".cart-list");
+            }
             //add listener for changes to quantity
             $(".item-quantity").change(function(event){
                 //get which row changed
@@ -184,7 +196,6 @@ function showCartItems(){
     });
    
 }
-
 function addDeleteListener(selector){
     $(selector).on("click",function(event){
         var id = $(this).parents(".cart-row").attr("id");
@@ -205,10 +216,49 @@ function addDeleteListener(selector){
         .done(function(data){
             console.log(data);
             $(event.target).parents(".cart-row").remove();
+            //$(event.target).parents(".cart-row").remove();
             updateCartNumber(data.length);
+            updateCartTotal(data.totalprice);
             if(data.length==0){
                 $(".cart-total").hide();
+                showEmpty(".cart-list");
             }
         });
     });
+}
+function emptyCart(){
+    var emptydata = {"token":token,"action":"empty"};
+    $.ajax({
+        type: "POST",
+        url: "shoppingcart.php",
+        data: emptydata,
+        dataType: "json",
+        encode: true,
+        //we use beforeSend to show loading spinner
+        beforeSend:function(){
+            $(event.target).append(spinner);
+            $(event.target).find(".spinner").show().css("animation-play-state","running");
+          }
+        })
+        .done(function(data){
+            if(data.success){
+                $(".cart-row").remove();
+                $(".cart-buttons").remove();
+                $(".cart-total").hide();
+                showCartItems();
+                updateCartNumber(0);
+                //showEmpty(".cart-list");
+            }
+        });
+}
+function addEmptyCartListener(){
+    $(".cart-empty").on("click",function(){emptyCart();});
+}
+function updateCartTotal(amount){
+    $(".cart-total").find(".price").html(amount);
+}
+
+function showEmpty(element){
+    var empty = "<h3 class='empty-sign'>Stare into the emptiness</h3>";
+    $(element).append(empty);
 }
